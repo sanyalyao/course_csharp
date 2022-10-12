@@ -1,8 +1,6 @@
-﻿using System.Collections.Generic;
-
-namespace WebAddressbookTests
+﻿namespace WebAddressbookTests
 {
-    class ContactData
+    public class ContactData
     {
         private string firstname;
         private string middlename = "";
