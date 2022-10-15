@@ -1,4 +1,5 @@
 ﻿using OpenQA.Selenium;
+using System;
 
 namespace WebAddressbookTests
 {
@@ -7,19 +8,37 @@ namespace WebAddressbookTests
         public LoginHelper(ApplicationManager manager) : base(manager)
         {
         }
-        public LoginHelper Login(AccountData accountdata)
+        public void Login(AccountData accountdata)
         {
-            driver.FindElement(By.Name("user")).Clear();
-            driver.FindElement(By.Name("user")).SendKeys(accountdata.Username);
-            driver.FindElement(By.Name("pass")).Clear();
-            driver.FindElement(By.Name("pass")).SendKeys(accountdata.Password);
+            if (IsLoggedIn())
+            {
+                if (IsLoggedIn(accountdata))
+                {
+                    return;
+                }
+                LogOut();
+            }
+            Type(By.Name("user"), accountdata.Username);
+            Type(By.Name("pass"), accountdata.Password);
             driver.FindElement(By.XPath("//input[@value='Login']")).Click();
-            return this;
         }
-        public LoginHelper LogOut()
+
+        public bool IsLoggedIn(AccountData accountdata)
         {
-            driver.FindElement(By.LinkText("Logout")).Click();
-            return this;
+            return IsLoggedIn() && driver.FindElement(By.Name("logout")).FindElement(By.TagName("b")).Text == $"({accountdata.Username})";
+        }
+
+        public bool IsLoggedIn()
+        {
+            return IsElementPresent(By.Name("logout"));
+        }
+
+        public void LogOut()
+        {
+            if (IsLoggedIn())
+            {
+                driver.FindElement(By.LinkText("Logout")).Click();
+            }
         }
     }
 }

@@ -13,5 +13,13 @@ namespace WebAddressbookTests
             newData.Footer = "new footer";
             app.Groups.Modify(1, newData);
         }
+
+        public void EmptyGroupModificationTest()
+        {
+            GroupData newData = new GroupData("Name Name");
+            newData.Header = "";
+            newData.Footer = "";
+            app.Groups.Modify(1, newData);
+        }
     }
 }
