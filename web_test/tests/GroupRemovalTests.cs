@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using System.Linq;
 
 namespace WebAddressbookTests
 {
@@ -6,9 +7,14 @@ namespace WebAddressbookTests
     public class GroupRemovalTests : AuthTestBase
     {
         [Test]
-        public void GroupRemovalTest()
+        public void RemoveGroup()
         {
-            app.Groups.Remove(1);
+            GroupData group = new GroupData("g");
+            if (! app.Groups.IsGroupPresent(group).Select(x => x.Key).Single())
+            {
+                app.Groups.Create(group);
+            }
+            app.Groups.Remove(group);
         }
     }
 }

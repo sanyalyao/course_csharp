@@ -1,25 +1,21 @@
 ﻿using NUnit.Framework;
+using System.Linq;
 
 namespace WebAddressbookTests
 {
     [TestFixture]
-    public class GroupModificationTests : TestBase
+    public class GroupModificationTests : AuthTestBase
     {
         [Test]
-        public void GroupModificationTest()
+        public void ModifyGroup()
         {
-            GroupData newData = new GroupData("new name");
-            newData.Header = "new header";
-            newData.Footer = "new footer";
-            app.Groups.Modify(1, newData);
-        }
-
-        public void EmptyGroupModificationTest()
-        {
-            GroupData newData = new GroupData("Name Name");
-            newData.Header = "";
-            newData.Footer = "";
-            app.Groups.Modify(1, newData);
+            GroupData newGroup = new GroupData("NEW NAME");
+            GroupData oldGroup = new GroupData("ff");
+            if (! app.Groups.IsGroupPresent(oldGroup).Select(x => x.Key).Single())
+            {
+                app.Groups.Create(oldGroup);
+            }
+            app.Groups.Modify(newGroup, oldGroup);
         }
     }
 }

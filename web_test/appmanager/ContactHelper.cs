@@ -1,7 +1,9 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 
 namespace WebAddressbookTests
 {
@@ -11,23 +13,28 @@ namespace WebAddressbookTests
         {
         }
 
-        public ContactHelper Remove(int contactInQueue)
+        public void Remove(ContactData contact)
         {
             manager.Navigator.OpenHomePage();
-            SelectContactInQueue(contactInQueue);
-            RemoveContact();
-            manager.Navigator.ReturnToHomePage();
-            return this;
+            if (IsContactPresent(contact).Select(x => x.Key).Single())
+            {
+                SelectContactInQueue(IsContactPresent(contact).Select(x => x.Value).Single());
+                RemoveContact();
+                manager.Navigator.ReturnToHomePage();
+            }
+
         }
 
-        public ContactHelper Modify(int contactInQueue, ContactData newData)
+        public void Modify(ContactData newData, ContactData oldData)
         {
-            manager.Navigator.OpenHomePage();
-            InitModify(contactInQueue);
-            FillContactForm(newData);
-            SubmitContactModification();
-            manager.Navigator.ReturnToHomePage();
-            return this;
+            if (IsContactPresent(oldData).Select(x => x.Key).Single())
+            {
+                manager.Navigator.OpenHomePage();
+                InitModify(IsContactPresent(oldData).Select(x => x.Value).Single());
+                FillContactForm(newData);
+                SubmitContactModification();
+                manager.Navigator.ReturnToHomePage();
+            }
         }
 
         public ContactHelper CreateNewContact(ContactData newContact)
@@ -57,7 +64,7 @@ namespace WebAddressbookTests
             driver.FindElement(By.XPath($"//table[@id='maintable']/tbody/tr[{1 + contactInQueue}]/td/input")).Click();
             return this;
         }
-
+        
         public ContactHelper RemoveContact()
         {
             driver.FindElement(By.XPath("//input[@value='Delete']")).Click();
@@ -105,26 +112,26 @@ namespace WebAddressbookTests
             //homepage
 
             //birthday
-            driver.FindElement(By.Name("bday")).Click();
-            new SelectElement(driver.FindElement(By.Name("bday"))).SelectByText(contact.BirthdayDate.date.ToString());
-            driver.FindElement(By.XPath($"//option[@value='{contact.BirthdayDate.date}']")).Click();
-            driver.FindElement(By.Name("bmonth")).Click();
-            new SelectElement(driver.FindElement(By.Name("bmonth"))).SelectByText(contact.BirthdayDate.month);
-            driver.FindElement(By.XPath($"//option[@value='{contact.BirthdayDate.month}']")).Click();
-            driver.FindElement(By.Name("byear")).Click();
-            driver.FindElement(By.Name("byear")).Clear();
-            driver.FindElement(By.Name("byear")).SendKeys(contact.BirthdayDate.year.ToString());
+            //driver.FindElement(By.Name("bday")).Click();
+            //new SelectElement(driver.FindElement(By.Name("bday"))).SelectByText(contact.BirthdayDate.date.ToString());
+            //driver.FindElement(By.XPath($"//option[@value='{contact.BirthdayDate.date}']")).Click();
+            //driver.FindElement(By.Name("bmonth")).Click();
+            //new SelectElement(driver.FindElement(By.Name("bmonth"))).SelectByText(contact.BirthdayDate.month);
+            //driver.FindElement(By.XPath($"//option[@value='{contact.BirthdayDate.month}']")).Click();
+            //driver.FindElement(By.Name("byear")).Click();
+            //driver.FindElement(By.Name("byear")).Clear();
+            //driver.FindElement(By.Name("byear")).SendKeys(contact.BirthdayDate.year.ToString());
 
             //Anniversary
-            driver.FindElement(By.Name("aday")).Click();
-            new SelectElement(driver.FindElement(By.Name("aday"))).SelectByText(contact.AnniversaryDate.date.ToString());
-            driver.FindElement(By.XPath($"//div[@id='content']/form/select[3]/option[{2 + contact.AnniversaryDate.date}]")).Click();
-            driver.FindElement(By.Name("amonth")).Click();
-            new SelectElement(driver.FindElement(By.Name("amonth"))).SelectByText(contact.AnniversaryDate.month);
-            driver.FindElement(By.XPath($"//div[@id='content']/form/select[4]/option[{1 + DateTime.ParseExact(contact.AnniversaryDate.month, "MMMM", CultureInfo.CurrentCulture).Month}]")).Click();
-            driver.FindElement(By.Name("ayear")).Click();
-            driver.FindElement(By.Name("ayear")).Clear();
-            driver.FindElement(By.Name("ayear")).SendKeys(contact.AnniversaryDate.year.ToString());
+            //driver.FindElement(By.Name("aday")).Click();
+            //new SelectElement(driver.FindElement(By.Name("aday"))).SelectByText(contact.AnniversaryDate.date.ToString());
+            //driver.FindElement(By.XPath($"//div[@id='content']/form/select[3]/option[{2 + contact.AnniversaryDate.date}]")).Click();
+            //driver.FindElement(By.Name("amonth")).Click();
+            //new SelectElement(driver.FindElement(By.Name("amonth"))).SelectByText(contact.AnniversaryDate.month);
+            //driver.FindElement(By.XPath($"//div[@id='content']/form/select[4]/option[{1 + DateTime.ParseExact(contact.AnniversaryDate.month, "MMMM", CultureInfo.CurrentCulture).Month}]")).Click();
+            //driver.FindElement(By.Name("ayear")).Click();
+            //driver.FindElement(By.Name("ayear")).Clear();
+            //driver.FindElement(By.Name("ayear")).SendKeys(contact.AnniversaryDate.year.ToString());
 
             //group
 
@@ -140,6 +147,36 @@ namespace WebAddressbookTests
         {
             driver.FindElement(By.LinkText("add new")).Click();
             return this;
+        }
+
+        public Dictionary<bool,int> IsContactPresent(ContactData contact)
+        {
+            IList<IWebElement> entries = driver.FindElement(By.Id("maintable")).FindElements(By.Name("entry"));
+            List<IWebElement> tdElements = new List<IWebElement>();
+            IList<KeyValuePair<string, string>> elements = new List<KeyValuePair<string, string>>();
+            Dictionary<bool, int> result = new Dictionary<bool, int>();
+            bool trueOrFalse = false;
+            int numberOfEntry = 0;
+            for (int i = 0; i < entries.Count(); i++)
+            {
+                tdElements.Clear();
+                elements.Clear();
+                tdElements.AddRange(entries[i].FindElements(By.TagName("td")));
+                for (int j = 0; j < tdElements.Count - 1; j++)
+                {
+                    elements.Add(new KeyValuePair<string, string>(tdElements[j].Text, tdElements[j + 1].Text));
+                    foreach (KeyValuePair<string, string> element in elements)
+                    {
+                        if (element.Key.ToLower() == contact.LastName.ToLower() && element.Value.ToLower() == contact.FirstName.ToLower())
+                        {
+                            trueOrFalse = true;
+                            numberOfEntry = i + 1;
+                        }
+                    }
+                }
+            }
+            result.Add(trueOrFalse, numberOfEntry);
+            return result;
         }
     }
 }

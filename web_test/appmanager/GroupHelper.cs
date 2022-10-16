@@ -1,5 +1,6 @@
 ﻿using OpenQA.Selenium;
-using System;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace WebAddressbookTests
 {
@@ -18,15 +19,28 @@ namespace WebAddressbookTests
             return this;
         }
 
-        public GroupHelper Modify(int groupInQueue, GroupData newData)
+        public void Remove(GroupData group)
         {
             manager.Navigator.GoToGroupsPage();
-            SelectGroup(groupInQueue);
-            InitGroupModification();
-            FillGroupForm(newData);
-            SubmitGroupModification();
-            ReturnToGroupsPage();
-            return this;
+            if (IsGroupPresent(group).Select(x => x.Key).Single())
+            {
+                SelectGroup(IsGroupPresent(group).Select(x => x.Value).Single());
+                RemoveGroup();
+                ReturnToGroupsPage();
+            }
+        }
+
+        public void Modify(GroupData newGroup, GroupData oldGroup)
+        {
+            manager.Navigator.GoToGroupsPage();
+            if (IsGroupPresent(oldGroup).Select(x => x.Key).Single())
+            {
+                SelectGroup(IsGroupPresent(oldGroup).Select(x => x.Value).Single());
+                InitGroupModification();
+                FillGroupForm(newGroup);
+                SubmitGroupModification();
+                ReturnToGroupsPage();
+            }
         }
 
         public GroupHelper SubmitGroupModification()
@@ -38,15 +52,6 @@ namespace WebAddressbookTests
         public GroupHelper InitGroupModification()
         {
             driver.FindElement(By.Name("edit")).Click();
-            return this;
-        }
-
-        public GroupHelper Remove(int groupInQueue)
-        {
-            manager.Navigator.GoToGroupsPage();
-            SelectGroup(groupInQueue);
-            RemoveGroup();
-            ReturnToGroupsPage();
             return this;
         }
 
@@ -82,6 +87,25 @@ namespace WebAddressbookTests
         {
             driver.FindElement(By.XPath($"//div[@id='content']/form/span[{number}]/input")).Click();
             return this;
+        }
+
+        public Dictionary<bool, int> IsGroupPresent(GroupData group)
+        {
+            manager.Navigator.GoToGroupsPage();
+            IList<IWebElement> groupElements = driver.FindElement(By.Id("content")).FindElements(By.ClassName("group"));
+            Dictionary<bool, int> result = new Dictionary<bool, int>();
+            bool trueOrFalse = false;
+            int numberOfGroup = 0;
+            for (int i = 0; i < groupElements.Count(); i++)
+            {
+                if (groupElements[i].Text.ToLower() == group.Name.ToLower())
+                {
+                    trueOrFalse = true;
+                    numberOfGroup = i + 1;
+                }
+            }
+            result.Add(trueOrFalse, numberOfGroup);
+            return result;
         }
     }
 }
