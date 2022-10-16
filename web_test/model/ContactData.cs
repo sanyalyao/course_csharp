@@ -5,24 +5,24 @@
         private string firstname;
         private string middlename = "";
         private string lastname;
-        private string nickname;
-        private string title;
-        private string company;
-        private string address;
-        private string homeTelephone;
-        private string mobile;
-        private string workTelephone;
-        private string fax;
-        private string email;
-        private string email2;
-        private string email3;
-        private string homepage;
+        private string nickname = "";
+        private string title = "";
+        private string company = "";
+        private string address = "";
+        private string homeTelephone = "";
+        private string mobile = "";
+        private string workTelephone = "";
+        private string fax = "";
+        private string email = "";
+        private string email2 = "";
+        private string email3 = "";
+        private string homepage = "";
         private Birthday birthday;
         private Anniversary anniversary;
-        private string group;
-        private string secondaryAddress;
-        private string secondaryHome;
-        private string secondaryNotes;
+        private string group = "";
+        private string secondaryAddress = "";
+        private string secondaryHome = "";
+        private string secondaryNotes = "";
 
         public ContactData(string firstname, string lastname)
         {
