@@ -25,6 +25,18 @@ namespace WebAddressbookTests
 
         }
 
+        public List<ContactData> GetContactList()
+        {
+            manager.Navigator.OpenHomePage();
+            List<ContactData> contactList = new List<ContactData>();
+            ICollection<IWebElement> elements = driver.FindElement(By.Id("maintable")).FindElements(By.Name("entry"));
+            foreach (IWebElement element in elements)
+            {
+                contactList.Add(new ContactData(element.FindElements(By.TagName("td"))[2].Text, element.FindElements(By.TagName("td"))[1].Text));
+            }
+            return contactList;
+        }
+
         public void Modify(ContactData newData, ContactData oldData)
         {
             if (IsContactPresent(oldData).Select(x => x.Key).Single())
