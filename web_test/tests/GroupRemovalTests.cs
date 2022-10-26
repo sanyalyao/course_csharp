@@ -10,18 +10,24 @@ namespace WebAddressbookTests
         [Test]
         public void RemoveGroup()
         {
-            GroupData group = new GroupData("removed group");
-            if (! app.Groups.IsGroupPresent(group).Select(x => x.Key).Single())
+            GroupData groupForRemove = new GroupData("removed group");
+            if (! app.Groups.IsGroupPresent(groupForRemove).Select(x => x.Key).Single())
             {
-                app.Groups.Create(group);
+                app.Groups.Create(groupForRemove);
             }
             List<GroupData> oldGroups = app.Groups.GetGroupList();
-            app.Groups.Remove(group);
+            app.Groups.Remove(groupForRemove);
+            Assert.AreEqual(oldGroups.Count - 1, app.Groups.GetGroupCount());
             List<GroupData> newGroups = app.Groups.GetGroupList();
-            oldGroups.Remove(group);
+            GroupData removedGroup = oldGroups.Where(item => item.Name == groupForRemove.Name).Single();
+            oldGroups.Remove(groupForRemove);
             oldGroups.Sort();
             newGroups.Sort();
             Assert.AreEqual(oldGroups,newGroups);
+            foreach (GroupData group in newGroups)
+            {
+                Assert.AreNotEqual(removedGroup.Id, group.Id);
+            }
         }
     }
 }

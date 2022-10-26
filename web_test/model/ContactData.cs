@@ -123,5 +123,7 @@ namespace WebAddressbookTests
         public string SecondaryHome { get; set; }
 
         public string SecondaryNotes { get; set; }
+
+        public string Id { get; set; }
     }
 }
