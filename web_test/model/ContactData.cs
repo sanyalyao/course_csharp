@@ -60,7 +60,11 @@ namespace WebAddressbookTests
             {
                 return 1;
             }
-            return FirstName.CompareTo(other.FirstName) & LastName.CompareTo(other.LastName);
+            if (LastName.ToLower().CompareTo(other.LastName.ToLower()) == 0)
+            {
+                return FirstName.ToLower().CompareTo(other.FirstName.ToLower());
+            }
+            return LastName.ToLower().CompareTo(other.LastName.ToLower());
         }
 
         public class Birthday
