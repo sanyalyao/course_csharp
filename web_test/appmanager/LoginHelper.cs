@@ -25,7 +25,13 @@ namespace WebAddressbookTests
 
         public bool IsLoggedIn(AccountData accountdata)
         {
-            return IsLoggedIn() && driver.FindElement(By.Name("logout")).FindElement(By.TagName("b")).Text == $"({accountdata.Username})";
+            return IsLoggedIn() && GetLoggetUserName() == accountdata.Username;
+        }
+
+        public string GetLoggetUserName()
+        {
+            string text = driver.FindElement(By.Name("logout")).FindElement(By.TagName("b")).Text;
+            return text.Substring(1, text.Length - 2);
         }
 
         public bool IsLoggedIn()
