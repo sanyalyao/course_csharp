@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 
 namespace WebAddressbookTests
 {
@@ -6,6 +7,8 @@ namespace WebAddressbookTests
     {
         private Birthday birthday;
         private Anniversary anniversary;
+        private string allPhones;
+        private string allEmails;
 
         public ContactData(string firstname, string lastname)
         {
@@ -125,5 +128,52 @@ namespace WebAddressbookTests
         public string SecondaryNotes { get; set; }
 
         public string Id { get; set; }
+
+        public string AllEmails
+        {
+            get
+            {
+                if (allEmails != null)
+                {
+                    return allEmails;
+                }
+                else
+                {
+                    return Email + Email2 + Email3;
+                }
+            }
+            set
+            {
+                allEmails = value;
+            }
+        }
+
+        public string AllPhones 
+        {
+            get 
+            { 
+                if (allPhones != null)
+                {
+                    return allPhones;
+                }
+                else
+                {
+                    return (CleanUp(HomeTelephone) + CleanUp(Mobile) + CleanUp(WorkTelephone)).Trim();
+                }
+            }
+            set 
+            {
+                allPhones = value;
+            }
+        }
+
+        public string CleanUp(string phone)
+        {
+            if (phone == null || allPhones == "")
+            {
+                return "";
+            }
+            return Regex.Replace(phone, @"[ ()-]", "") + "\r\n";
+        }
     }
 }

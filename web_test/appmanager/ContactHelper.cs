@@ -1,15 +1,56 @@
 ﻿using OpenQA.Selenium;
-using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace WebAddressbookTests
 {
     public class ContactHelper : HelperBase
     {
         private List<ContactData> contactCache = null;
+
+        public ContactData GetContactInformationFromTable(int index)
+        {
+            manager.Navigator.OpenHomePage();
+            IList<IWebElement> cells = driver.FindElements(By.Name("entry"))[index - 1].FindElements(By.TagName("td"));
+            string lastName = cells[1].Text;
+            string firstName = cells[2].Text;
+            string address = cells[3].Text;
+            string allEmails = String.Join("", cells[4].FindElements(By.TagName("a")).Select(email => email.Text));
+            string allPhones = cells[5].Text;
+            return new ContactData(firstName, lastName)
+            {
+                Address = address,
+                AllEmails = allEmails,
+                AllPhones = allPhones
+            };
+        }
+
+        public ContactData GetContactInformationFromForm(int index)
+        {
+            manager.Navigator.OpenHomePage();
+            InitModify(index);
+            string firstName = driver.FindElement(By.Name("firstname")).GetAttribute("value");
+            string lastName = driver.FindElement(By.Name("lastname")).GetAttribute("value");
+            string address = driver.FindElement(By.Name("address")).GetAttribute("value");
+            string email = driver.FindElement(By.Name("email")).GetAttribute("value");
+            string email2 = driver.FindElement(By.Name("email2")).GetAttribute("value");
+            string email3 = driver.FindElement(By.Name("email3")).GetAttribute("value");
+            string homePhone = driver.FindElement(By.Name("home")).GetAttribute("value");
+            string mobilePhone = driver.FindElement(By.Name("mobile")).GetAttribute("value");
+            string workPhone = driver.FindElement(By.Name("work")).GetAttribute("value");
+            return new ContactData(firstName, lastName)
+            {
+                Address = address,
+                Email = email,
+                Email2 = email2,
+                Email3 = email3,
+                HomeTelephone = homePhone,
+                Mobile = mobilePhone,
+                WorkTelephone = workPhone
+            };
+        }
 
         public ContactHelper(ApplicationManager manager) : base(manager)
         {
@@ -179,6 +220,7 @@ namespace WebAddressbookTests
 
         public Dictionary<bool,int> IsContactPresent(ContactData contact)
         {
+            manager.Navigator.OpenHomePage();
             IList<IWebElement> entries = driver.FindElement(By.Id("maintable")).FindElements(By.Name("entry"));
             List<IWebElement> tdElements = new List<IWebElement>();
             IList<KeyValuePair<string, string>> elements = new List<KeyValuePair<string, string>>();
