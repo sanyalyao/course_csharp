@@ -1,14 +1,16 @@
 ﻿using System;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace WebAddressbookTests
 {
     public class ContactData : IEquatable<ContactData>, IComparable<ContactData>
     {
-        private Birthday birthday;
-        private Anniversary anniversary;
         private string allPhones;
         private string allEmails;
+        private string allInformation;
+        private string howOld;
+        private string howLong;
 
         public ContactData(string firstname, string lastname)
         {
@@ -51,43 +53,12 @@ namespace WebAddressbookTests
             return LastName.ToLower().CompareTo(other.LastName.ToLower());
         }
 
-        public class Birthday
-        {
-            public int date { get; set; }
-            public string month { get; set; }
-            public int year { get; set; }
-            public Birthday(int date, string month, int year)
-            {
-                this.date = date;
-                this.month = month;
-                this.year = year;
-            }
-        }
-
-        public Birthday BirthdayDate
-        {
-            get { return birthday; }
-            set { birthday = value; }
-        }
-
-        public class Anniversary
-        {
-            public int date { get; set; }
-            public string month { get; set; }
-            public int year { get; set; }
-            public Anniversary(int date, string month, int year)
-            {
-                this.date = date;
-                this.month = month;
-                this.year = year;
-            }
-        }
-
-        public Anniversary AnniversaryDate
-        {
-            get { return anniversary; }
-            set { anniversary = value; }
-        }
+        public string Bday {get;set; }
+        public string Bmonth { get; set; }
+        public string Byear { get; set; }
+        public string Aday { get; set; }
+        public string Amonth { get; set; }
+        public string Ayear { get; set; }
 
         public string FirstName { get; set; }
 
@@ -128,6 +99,102 @@ namespace WebAddressbookTests
         public string SecondaryNotes { get; set; }
 
         public string Id { get; set; }
+        public string HowOld
+        {
+            get
+            {
+                return $"{DateTime.Now.Year - Int32.Parse(Byear)}";
+            }
+            set
+            {
+                howOld = value;
+            }
+        }
+
+        public string HowLong
+        {
+            get
+            {
+                return $"{DateTime.Now.Year - Int32.Parse(Ayear)}";
+            }
+            set
+            {
+                howLong = value;
+            }
+        }
+
+        public string AllInformation
+        {
+            get
+            {
+                if (allInformation != null)
+                {
+                    return allInformation;
+                }
+                else
+                {
+                    return $"{FirstName} "
+                        + (MiddleName == "" ? "" : $"{MiddleName} ")
+                        + LastName
+                        + ("\r\n" + Nickname == "\r\n" ? "" : "\r\n" + Nickname)
+                        + ("\r\n" + Title == "\r\n" ? "" : "\r\n" + Title)
+                        + ("\r\n" + Company == "\r\n" ? "" : "\r\n" + Company)
+                        + ("\r\n" + Address == "\r\n" ? "" : "\r\n" + Address)
+                        + ($"\r\n\r\nH: {HomeTelephone}" == "\r\n\r\nH: " ? "" : $"\r\n\r\nH: {HomeTelephone}")
+                        + StructurePhone($"\r\nM: {Mobile}" == "\r\nM: " ? "" : $"\r\nM: {Mobile}")
+                        + StructurePhone($"\r\nW: {WorkTelephone}" == "\r\nW: " ? "" : $"\r\nW: {WorkTelephone}")
+                        + StructurePhone($"\r\nF: {Fax}" == "\r\nF: " ? "" : $"\r\nF: {Fax}")
+                        + ("\r\n\r\n" + AllEmails == "\r\n\r\n" ? "" : "\r\n\r\n" + AllEmails)
+                        + ($"\r\nHomepage:\r\n{Homepage}" == "\r\nHomepage:\r\n" ? "" : $"\r\nHomepage:\r\n{Homepage}")
+                        + GetBirthday()
+                        + GetAnniversary()
+                        + ("\r\n\r\n" + SecondaryAddress == "\r\n\r\n" ? "" : "\r\n\r\n" + SecondaryAddress)
+                        + ($"\r\n\r\nP: {SecondaryHome}" == "\r\n\r\nP: " ? "" : $"\r\n\r\nP: {SecondaryHome}")
+                        + ("\r\n\r\n" + SecondaryNotes == "\r\n\r\n" ? "" : "\r\n\r\n" + SecondaryNotes);
+                }
+            }
+            set
+            {
+                allInformation = value;
+            }
+        }
+
+        public string StructurePhone(string phone)
+        {
+            if (HomeTelephone != "")
+                return phone;
+            return "\r\n" + phone == "\r\n" ? "" : "\r\n" + phone;
+        }
+
+        public string GetAnniversary()
+        {
+            StringBuilder result = new StringBuilder();
+            if (Aday == "" && Amonth == "" && Ayear == "")
+                return "";
+            if (Aday != "")
+                result.Append($" {Aday}.");
+            if (Amonth != "")
+                result.Append($" {Amonth}");
+            if (Ayear != "")
+                result.Append($" {Ayear} ({HowLong})");
+            if (GetBirthday() != "")
+                return "\r\n" + "Anniversary" + result;
+            return "\r\n\r\n" + "Anniversary" + result;
+        }
+
+        public string GetBirthday()
+        {
+            StringBuilder result = new StringBuilder();
+            if (Bday == "" && Bmonth == "" && Byear == "")
+                return "";
+            if (Bday != "")
+                result.Append($" {Bday}."); 
+            if (Bmonth != "")
+                result.Append($" {Bmonth}"); 
+            if (Byear != "")
+                result.Append($" {Byear} ({HowOld})");             
+            return "\r\n\r\n" + "Birthday" + result;
+        }
 
         public string AllEmails
         {
