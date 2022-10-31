@@ -139,7 +139,7 @@ namespace WebAddressbookTests
                 }
                 else
                 {
-                    return Email + Email2 + Email3;
+                    return Email + "\r\n" + Email2 + "\r\n" + Email3 + "\r\n";
                 }
             }
             set
@@ -158,7 +158,7 @@ namespace WebAddressbookTests
                 }
                 else
                 {
-                    return (CleanUp(HomeTelephone) + CleanUp(Mobile) + CleanUp(WorkTelephone)).Trim();
+                    return (CleanUp(HomeTelephone) + CleanUp(Mobile) + CleanUp(WorkTelephone) + CleanUp(SecondaryHome)).Trim();
                 }
             }
             set 

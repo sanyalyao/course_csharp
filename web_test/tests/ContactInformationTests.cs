@@ -6,7 +6,7 @@ namespace WebAddressbookTests
     public class ContactInformationTests : AuthTestBase
     {
         [Test]
-        public void ContactInformationTest()
+        public void CompareInfoFromTableAndForm()
         {
             ContactData fromTable = app.Contacts.GetContactInformationFromTable(1);
             ContactData fromForm = app.Contacts.GetContactInformationFromForm(1);
