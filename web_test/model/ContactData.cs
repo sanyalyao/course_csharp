@@ -139,13 +139,23 @@ namespace WebAddressbookTests
                 }
                 else
                 {
-                    return Email + "\r\n" + Email2 + "\r\n" + Email3;
+                    return (CleanUpEmail(Email) + CleanUpEmail(Email2) + CleanUpEmail(Email3)).Trim();
                 }
             }
             set
             {
                 allEmails = value;
             }
+        }
+
+        public string CleanUpEmail(string email)
+        {
+            if (email == null || allEmails == "" || email == "")
+            {
+                return "";
+            }
+            return email + "\r\n";
+
         }
 
         public string AllPhones 
