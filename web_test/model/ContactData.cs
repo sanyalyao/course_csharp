@@ -94,7 +94,7 @@ namespace WebAddressbookTests
 
         public string SecondaryAddress { get; set; }
 
-        public string SecondaryHome { get; set; }
+        public string SecondaryHomePhone { get; set; }
 
         public string SecondaryNotes { get; set; }
 
@@ -149,7 +149,7 @@ namespace WebAddressbookTests
                         + GetBirthday()
                         + GetAnniversary()
                         + ("\r\n\r\n" + SecondaryAddress == "\r\n\r\n" ? "" : "\r\n\r\n" + SecondaryAddress)
-                        + ($"\r\n\r\nP: {SecondaryHome}" == "\r\n\r\nP: " ? "" : $"\r\n\r\nP: {SecondaryHome}")
+                        + ($"\r\n\r\nP: {SecondaryHomePhone}" == "\r\n\r\nP: " ? "" : $"\r\n\r\nP: {SecondaryHomePhone}")
                         + ("\r\n\r\n" + SecondaryNotes == "\r\n\r\n" ? "" : "\r\n\r\n" + SecondaryNotes);
                 }
             }
@@ -235,7 +235,7 @@ namespace WebAddressbookTests
                 }
                 else
                 {
-                    return (CleanUp(HomeTelephone) + CleanUp(Mobile) + CleanUp(WorkTelephone) + CleanUp(SecondaryHome)).Trim();
+                    return (CleanUp(HomeTelephone) + CleanUp(Mobile) + CleanUp(WorkTelephone) + CleanUp(SecondaryHomePhone)).Trim();
                 }
             }
             set 
