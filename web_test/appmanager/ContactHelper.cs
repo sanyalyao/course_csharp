@@ -1,6 +1,9 @@
 ﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 using System.Collections.Generic;
 using System.Linq;
+using System;
+using System.Globalization;
 
 namespace WebAddressbookTests
 {
@@ -48,7 +51,7 @@ namespace WebAddressbookTests
                 HomeTelephone = homePhone,
                 Mobile = mobilePhone,
                 WorkTelephone = workPhone,
-                SecondaryHome = homePhoneSecondary
+                SecondaryHomePhone = homePhoneSecondary
             };
         }
 
@@ -115,7 +118,7 @@ namespace WebAddressbookTests
                 Amonth = amonth == "-" ? "" : amonth,
                 Ayear = ayear,
                 SecondaryAddress = addressSecondary,
-                SecondaryHome = homePhoneSecondary,
+                SecondaryHomePhone = homePhoneSecondary,
                 SecondaryNotes = notes
             };
         }
@@ -220,63 +223,112 @@ namespace WebAddressbookTests
             driver.FindElement(By.Name("firstname")).Clear();
             driver.FindElement(By.Name("firstname")).SendKeys(contact.FirstName);
 
-            //driver.FindElement(By.Name("middlename")).Clear();
-            //driver.FindElement(By.Name("middlename")).SendKeys(contact.MiddleName);
+            driver.FindElement(By.Name("middlename")).Clear();
+            driver.FindElement(By.Name("middlename")).SendKeys(contact.MiddleName == null ? "" : contact.MiddleName);
 
             driver.FindElement(By.Name("lastname")).Clear();
             driver.FindElement(By.Name("lastname")).SendKeys(contact.LastName);
 
             //nickname
+            driver.FindElement(By.Name("nickname")).Clear();
+            driver.FindElement(By.Name("nickname")).SendKeys(contact.Nickname == null ? "" : contact.Nickname);
 
             //company
+            driver.FindElement(By.Name("company")).Clear();
+            driver.FindElement(By.Name("company")).SendKeys(contact.Company == null ? "" : contact.Company);
 
             //title
+            driver.FindElement(By.Name("title")).Clear();
+            driver.FindElement(By.Name("title")).SendKeys(contact.Title == null ? "" : contact.Title);
 
             //address
+            driver.FindElement(By.Name("address")).Clear();
+            driver.FindElement(By.Name("address")).SendKeys(contact.Address == null ? "" : contact.Address);
 
             //telephone
             //home
+            driver.FindElement(By.Name("home")).Clear();
+            driver.FindElement(By.Name("home")).SendKeys(contact.HomeTelephone == null ? "" : contact.HomeTelephone);
+
             //mobile
+            driver.FindElement(By.Name("mobile")).Clear();
+            driver.FindElement(By.Name("mobile")).SendKeys(contact.Mobile == null ? "" : contact.Mobile);
+
             //work
+            driver.FindElement(By.Name("work")).Clear();
+            driver.FindElement(By.Name("work")).SendKeys(contact.WorkTelephone == null ? "" : contact.WorkTelephone);
+
             //fax
+            driver.FindElement(By.Name("fax")).Clear();
+            driver.FindElement(By.Name("fax")).SendKeys(contact.Fax == null ? "" : contact.Fax);
 
             //email
+            driver.FindElement(By.Name("email")).Clear();
+            driver.FindElement(By.Name("email")).SendKeys(contact.Email == null ? "" : contact.Email);
 
             //email-2
+            driver.FindElement(By.Name("email2")).Clear();
+            driver.FindElement(By.Name("email2")).SendKeys(contact.Email2 == null ? "" : contact.Email2);
 
             //email-3
+            driver.FindElement(By.Name("email3")).Clear();
+            driver.FindElement(By.Name("email3")).SendKeys(contact.Email3 == null ? "" : contact.Email3);
 
             //homepage
+            driver.FindElement(By.Name("homepage")).Clear();
+            driver.FindElement(By.Name("homepage")).SendKeys(contact.Homepage == null ? "" : contact.Homepage);
 
             //birthday
-            //driver.FindElement(By.Name("bday")).Click();
-            //new SelectElement(driver.FindElement(By.Name("bday"))).SelectByText(contact.BirthdayDate.date.ToString());
-            //driver.FindElement(By.XPath($"//option[@value='{contact.BirthdayDate.date}']")).Click();
-            //driver.FindElement(By.Name("bmonth")).Click();
-            //new SelectElement(driver.FindElement(By.Name("bmonth"))).SelectByText(contact.BirthdayDate.month);
-            //driver.FindElement(By.XPath($"//option[@value='{contact.BirthdayDate.month}']")).Click();
-            //driver.FindElement(By.Name("byear")).Click();
-            //driver.FindElement(By.Name("byear")).Clear();
-            //driver.FindElement(By.Name("byear")).SendKeys(contact.BirthdayDate.year.ToString());
+            if (contact.Bday != null)
+            {
+                driver.FindElement(By.Name("bday")).Click();
+                new SelectElement(driver.FindElement(By.Name("bday"))).SelectByText(contact.Bday);
+                driver.FindElement(By.XPath($"//option[@value='{contact.Bday}']")).Click();
+            }
+            if (contact.Bmonth != null)
+            {
+                driver.FindElement(By.Name("bmonth")).Click();
+                new SelectElement(driver.FindElement(By.Name("bmonth"))).SelectByText(contact.Bmonth);
+                driver.FindElement(By.XPath($"//option[@value='{contact.Bmonth}']")).Click();
+            }
+            if (contact.Byear != null)
+            {
+                driver.FindElement(By.Name("byear")).Click();
+                driver.FindElement(By.Name("byear")).Clear();
+                driver.FindElement(By.Name("byear")).SendKeys(contact.Byear);
+            }
 
             //Anniversary
-            //driver.FindElement(By.Name("aday")).Click();
-            //new SelectElement(driver.FindElement(By.Name("aday"))).SelectByText(contact.AnniversaryDate.date.ToString());
-            //driver.FindElement(By.XPath($"//div[@id='content']/form/select[3]/option[{2 + contact.AnniversaryDate.date}]")).Click();
-            //driver.FindElement(By.Name("amonth")).Click();
-            //new SelectElement(driver.FindElement(By.Name("amonth"))).SelectByText(contact.AnniversaryDate.month);
-            //driver.FindElement(By.XPath($"//div[@id='content']/form/select[4]/option[{1 + DateTime.ParseExact(contact.AnniversaryDate.month, "MMMM", CultureInfo.CurrentCulture).Month}]")).Click();
-            //driver.FindElement(By.Name("ayear")).Click();
-            //driver.FindElement(By.Name("ayear")).Clear();
-            //driver.FindElement(By.Name("ayear")).SendKeys(contact.AnniversaryDate.year.ToString());
-
-            //group
+            if (contact.Aday != null)
+            {
+                driver.FindElement(By.Name("aday")).Click();
+                new SelectElement(driver.FindElement(By.Name("aday"))).SelectByText(contact.Aday);
+                driver.FindElement(By.XPath($"//div[@id='content']/form/select[3]/option[{2 + Int32.Parse(contact.Aday)}]")).Click();
+            }
+            if (contact.Amonth != null)
+            {
+                driver.FindElement(By.Name("amonth")).Click();
+                new SelectElement(driver.FindElement(By.Name("amonth"))).SelectByText(contact.Amonth);
+                driver.FindElement(By.XPath($"//div[@id='content']/form/select[4]/option[{1 + DateTime.ParseExact(contact.Amonth, "MMMM", CultureInfo.CurrentCulture).Month}]")).Click();
+            }
+            if (contact.Ayear != null)
+            {
+                driver.FindElement(By.Name("ayear")).Click();
+                driver.FindElement(By.Name("ayear")).Clear();
+                driver.FindElement(By.Name("ayear")).SendKeys(contact.Ayear);
+            }
 
             //secondary address
+            driver.FindElement(By.Name("address2")).Clear();
+            driver.FindElement(By.Name("address2")).SendKeys(contact.SecondaryAddress == null ? "" : contact.SecondaryAddress);
 
             //secondary home
+            driver.FindElement(By.Name("phone2")).Clear();
+            driver.FindElement(By.Name("phone2")).SendKeys(contact.SecondaryHomePhone == null ? "" : contact.SecondaryHomePhone);
 
             //secondary notes
+            driver.FindElement(By.Name("notes")).Clear();
+            driver.FindElement(By.Name("notes")).SendKeys(contact.SecondaryNotes == null ? "" : contact.SecondaryNotes);
 
             return this;
         }
