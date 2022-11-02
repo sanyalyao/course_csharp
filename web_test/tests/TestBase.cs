@@ -69,12 +69,12 @@ namespace WebAddressbookTests
 
         public static string GetRandomMonth()
         {
-            List<string> months = DateTimeFormatInfo.CurrentInfo.MonthNames.ToList();
+            List<string> months = DateTimeFormatInfo.CurrentInfo.MonthNames.Where(month => month != "").ToList();
             return months[rnd.Next(months.Count())];
         }
         public static string GenerateRandomYear()
         {
-            return rnd.Next(1000, 9999).ToString();
+            return rnd.Next(2000, DateTime.Now.Year).ToString();
         }
 
         public static string GenerateRandomWebSite()
