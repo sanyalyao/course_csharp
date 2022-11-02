@@ -246,7 +246,7 @@ namespace WebAddressbookTests
 
         public string CleanUp(string phone)
         {
-            if (phone == null || allPhones == "")
+            if (phone == null || allPhones == "" || phone == "")
             {
                 return "";
             }
