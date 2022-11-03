@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -9,8 +10,8 @@ namespace WebAddressbookTests
         private string allPhones;
         private string allEmails;
         private string allInformation;
-        private string howOld;
-        private string howLong;
+        private int howOld;
+        private int howLong;
 
         public ContactData(string firstname, string lastname)
         {
@@ -99,11 +100,11 @@ namespace WebAddressbookTests
         public string SecondaryNotes { get; set; }
 
         public string Id { get; set; }
-        public string HowOld
+        public int HowOld
         {
             get
             {
-                return $"{DateTime.Now.Year - Int32.Parse(Byear)}";
+                return DateTime.Now.Year - Int32.Parse(Byear);
             }
             set
             {
@@ -111,11 +112,11 @@ namespace WebAddressbookTests
             }
         }
 
-        public string HowLong
+        public int HowLong
         {
             get
             {
-                return $"{DateTime.Now.Year - Int32.Parse(Ayear)}";
+                return DateTime.Now.Year - Int32.Parse(Ayear);
             }
             set
             {
@@ -133,37 +134,66 @@ namespace WebAddressbookTests
                 }
                 else
                 {
-                    return $"{FirstName} "
-                        + (MiddleName == "" ? "" : $"{MiddleName} ")
-                        + LastName
-                        + ("\r\n" + Nickname == "\r\n" ? "" : "\r\n" + Nickname)
-                        + ("\r\n" + Title == "\r\n" ? "" : "\r\n" + Title)
-                        + ("\r\n" + Company == "\r\n" ? "" : "\r\n" + Company)
-                        + ("\r\n" + Address == "\r\n" ? "" : "\r\n" + Address)
-                        + ($"\r\n\r\nH: {HomeTelephone}" == "\r\n\r\nH: " ? "" : $"\r\n\r\nH: {HomeTelephone}")
-                        + StructurePhone($"\r\nM: {Mobile}" == "\r\nM: " ? "" : $"\r\nM: {Mobile}")
-                        + StructurePhone($"\r\nW: {WorkTelephone}" == "\r\nW: " ? "" : $"\r\nW: {WorkTelephone}")
-                        + StructurePhone($"\r\nF: {Fax}" == "\r\nF: " ? "" : $"\r\nF: {Fax}")
-                        + ("\r\n\r\n" + AllEmails == "\r\n\r\n" ? "" : "\r\n\r\n" + AllEmails)
-                        + ($"\r\nHomepage:\r\n{Homepage}" == "\r\nHomepage:\r\n" ? "" : $"\r\nHomepage:\r\n{Homepage}")
+                    return (StructureName(FirstName)
+                        + StructureName(MiddleName)
+                        + StructureName(LastName)
+                        + StructureFirstInfo(Nickname)
+                        + StructureFirstInfo(Title)
+                        + StructureFirstInfo(Company)
+                        + StructureFirstInfo(Address)
+                        + GetPhone()
+                        + (AllEmails == "" ? "" : "\r\n\r\n" + AllEmails)
+                        + GetHomepage()
                         + GetBirthday()
                         + GetAnniversary()
-                        + ("\r\n\r\n" + SecondaryAddress == "\r\n\r\n" ? "" : "\r\n\r\n" + SecondaryAddress)
-                        + ($"\r\n\r\nP: {SecondaryHomePhone}" == "\r\n\r\nP: " ? "" : $"\r\n\r\nP: {SecondaryHomePhone}")
-                        + ("\r\n\r\n" + SecondaryNotes == "\r\n\r\n" ? "" : "\r\n\r\n" + SecondaryNotes);
-                }
+                        + GetSecondaryInformation()).Trim();
+                };
             }
             set
             {
                 allInformation = value;
             }
         }
-
-        public string StructurePhone(string phone)
+        public string StructureName(string name)
         {
-            if (HomeTelephone != "")
-                return phone;
-            return "\r\n" + phone == "\r\n" ? "" : "\r\n" + phone;
+            return name == "" ? "" : $" {name}";
+        }
+
+        public string StructureFirstInfo(string info)
+        {
+            return (info == "" ? "" : "\r\n" + info);
+        }
+
+        public string GetPhone()
+        {
+            if (HomeTelephone == "" && Mobile == "" && WorkTelephone == "" && Fax == "")
+                return "";
+            return "\r\n" + (HomeTelephone == "" ? "" : $"\r\nH: {HomeTelephone}") + (Mobile == "" ? "" : $"\r\nM: {Mobile}") + (WorkTelephone == "" ? "" : $"\r\nW: {WorkTelephone}") + (Fax == "" ? "" : $"\r\nF: {Fax}");
+        }
+
+        public string GetHomepage()
+        {
+            if (Homepage == "")
+                return Homepage;
+            if (AllEmails == null)
+            {
+                return $"\r\n\r\nHomepage:\r\n{Homepage}";
+            }
+            return $"\r\nHomepage:\r\n{Homepage}";
+        }
+
+        public string GetBirthday()
+        {
+            StringBuilder result = new StringBuilder();
+            if (Bday == "" && Bmonth == "" && Byear == "")
+                return "";
+            if (Bday != "")
+                result.Append($" {Bday}.");
+            if (Bmonth != "")
+                result.Append($" {Bmonth}");
+            if (Byear != "")
+                result.Append($" {Byear} ({HowOld})");
+            return "\r\n\r\n" + "Birthday" + result;
         }
 
         public string GetAnniversary()
@@ -182,18 +212,28 @@ namespace WebAddressbookTests
             return "\r\n\r\n" + "Anniversary" + result;
         }
 
-        public string GetBirthday()
+        public string GetSecondaryInformation()
         {
-            StringBuilder result = new StringBuilder();
-            if (Bday == "" && Bmonth == "" && Byear == "")
-                return "";
-            if (Bday != "")
-                result.Append($" {Bday}."); 
-            if (Bmonth != "")
-                result.Append($" {Bmonth}"); 
-            if (Byear != "")
-                result.Append($" {Byear} ({HowOld})");             
-            return "\r\n\r\n" + "Birthday" + result;
+            if (GetBirthday() == "" && GetAnniversary() == "" && SecondaryAddress != "") 
+            {
+                return "\r\n" + (SecondaryAddress == "" ? "" : "\r\n\r\n" + SecondaryAddress)
+                    + (SecondaryHomePhone == "" ? "" : $"\r\n\r\nP: {SecondaryHomePhone}")
+                    + (SecondaryNotes == "" ? "" : "\r\n\r\n" + SecondaryNotes);
+            }
+            if (GetBirthday() == "" && GetAnniversary() == "" && SecondaryAddress == "")
+            {
+                return "\r\n\r\n" + (SecondaryHomePhone == "" ? "" : $"\r\n\r\nP: {SecondaryHomePhone}")
+                    + (SecondaryNotes == "" ? "" : "\r\n\r\n" + SecondaryNotes);
+
+            }
+            if (SecondaryAddress == "")
+            {
+                return "\r\n" + (SecondaryHomePhone == "" ? "" : $"\r\n\r\nP: {SecondaryHomePhone}")
+                    + (SecondaryNotes == "" ? "" : "\r\n\r\n" + SecondaryNotes);
+            }
+            return (SecondaryAddress == "" ? "" : "\r\n\r\n" + SecondaryAddress)
+                        + (SecondaryHomePhone == "" ? "" : $"\r\n\r\nP: {SecondaryHomePhone}")
+                        + (SecondaryNotes == "" ? "" : "\r\n\r\n" + SecondaryNotes);
         }
 
         public string AllEmails

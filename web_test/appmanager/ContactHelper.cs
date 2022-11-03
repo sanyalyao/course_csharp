@@ -58,11 +58,8 @@ namespace WebAddressbookTests
         public ContactData GetContactInformationFromPropertyPage(int index)
         {
             GoToPropertiesOfContact(index);
-            List<string> names = new List<string>(driver.FindElement(By.Id("content")).Text.Split('\n'));
-            string firstName = StructureNames(names[0].Trim().Split().ToList()).Where(element => element.Key == "first").First().Value;
-            string lastName = StructureNames(names[0].Trim().Split().ToList()).Where(element => element.Key == "last").First().Value;
             string allInformation = driver.FindElement(By.Id("content")).Text;
-            return new ContactData(firstName, lastName)
+            return new ContactData("", "")
             {
                 AllInformation = allInformation
             };
@@ -342,24 +339,6 @@ namespace WebAddressbookTests
         {
             manager.Navigator.OpenHomePage();
             driver.FindElements(By.Name("entry"))[index - 1].FindElements(By.TagName("td"))[6].Click();
-        }
-
-        public Dictionary<string, string> StructureNames(List<string> names)
-        {
-            Dictionary<string, string> dictionaryNames = new Dictionary<string, string>();
-            if (names.Count() == 3)
-            {
-                dictionaryNames.Add("first", names[0].Trim());
-                dictionaryNames.Add("middle", names[1].Trim());
-                dictionaryNames.Add("last", names[2].Trim());
-            }
-            else
-            {
-                dictionaryNames.Add("first", names[0].Trim());
-                dictionaryNames.Add("last", names[1].Trim());
-                dictionaryNames.Add("middle", "");
-            }
-            return dictionaryNames;
         }
 
         public Dictionary<bool,int> IsContactPresent(ContactData contact)
