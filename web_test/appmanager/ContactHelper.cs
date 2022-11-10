@@ -218,13 +218,13 @@ namespace WebAddressbookTests
         public ContactHelper FillContactForm(ContactData contact)
         {
             driver.FindElement(By.Name("firstname")).Clear();
-            driver.FindElement(By.Name("firstname")).SendKeys(contact.FirstName);
+            driver.FindElement(By.Name("firstname")).SendKeys(contact.FirstName == null ? "" : contact.FirstName);
 
             driver.FindElement(By.Name("middlename")).Clear();
             driver.FindElement(By.Name("middlename")).SendKeys(contact.MiddleName == null ? "" : contact.MiddleName);
 
             driver.FindElement(By.Name("lastname")).Clear();
-            driver.FindElement(By.Name("lastname")).SendKeys(contact.LastName);
+            driver.FindElement(By.Name("lastname")).SendKeys(contact.LastName == null ? "" : contact.LastName);
 
             //nickname
             driver.FindElement(By.Name("nickname")).Clear();
