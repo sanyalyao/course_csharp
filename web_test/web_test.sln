@@ -5,6 +5,8 @@ VisualStudioVersion = 17.2.32602.215
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "web_test", "web_test.csproj", "{D74F7917-89B4-466E-A984-9AFFE5DC1650}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "data_generators", "..\data_generators\data_generators.csproj", "{B2C67DF0-4841-4EBB-8483-9306972A734C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,14 @@ Global
 		{D74F7917-89B4-466E-A984-9AFFE5DC1650}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D74F7917-89B4-466E-A984-9AFFE5DC1650}.Release|x64.ActiveCfg = Release|x64
 		{D74F7917-89B4-466E-A984-9AFFE5DC1650}.Release|x64.Build.0 = Release|x64
+		{B2C67DF0-4841-4EBB-8483-9306972A734C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2C67DF0-4841-4EBB-8483-9306972A734C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2C67DF0-4841-4EBB-8483-9306972A734C}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{B2C67DF0-4841-4EBB-8483-9306972A734C}.Debug|x64.Build.0 = Debug|Any CPU
+		{B2C67DF0-4841-4EBB-8483-9306972A734C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2C67DF0-4841-4EBB-8483-9306972A734C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2C67DF0-4841-4EBB-8483-9306972A734C}.Release|x64.ActiveCfg = Release|Any CPU
+		{B2C67DF0-4841-4EBB-8483-9306972A734C}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

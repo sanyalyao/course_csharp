@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfContactData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ContactData>
+    <Bday>30</Bday>
+    <Bmonth>August</Bmonth>
+    <Byear>2007</Byear>
+    <Aday>28</Aday>
+    <Amonth>December</Amonth>
+    <Ayear>2015</Ayear>
+    <FirstName>"</FirstName>
+    <MiddleName>&lt;</MiddleName>
+    <LastName>O</LastName>
+    <Nickname>50(X</Nickname>
+    <Title>AI</Title>
+    <Company>A?6</Company>
+    <Address>R$</Address>
+    <HomeTelephone>+79204402296</HomeTelephone>
+    <Mobile>+7 333 164 32 66</Mobile>
+    <WorkTelephone>+7(236(607(47(99</WorkTelephone>
+    <Fax>+7(681(330(74(42</Fax>
+    <Email>uuuuu@zzzzz</Email>
+    <Email2>ttttt@nnnnn</Email2>
+    <Email3>ggggg@yyyyy</Email3>
+    <Homepage>eeeee.com</Homepage>
+    <SecondaryAddress>\(ME6KMQ</SecondaryAddress>
+    <SecondaryHomePhone>+7)222)511)47)49</SecondaryHomePhone>
+    <SecondaryNotes>NQX</SecondaryNotes>
+    <HowOld>15</HowOld>
+    <HowLong>7</HowLong>
+    <AllInformation>" &lt; O
+50(X
+AI
+A?6
+R$
+
+H: +79204402296
+M: +7 333 164 32 66
+W: +7(236(607(47(99
+F: +7(681(330(74(42
+
+uuuuu@zzzzz
+ttttt@nnnnn
+ggggg@yyyyy
+Homepage:
+eeeee.com
+
+Birthday 30. August 2007 (15)
+Anniversary 28. December 2015 (7)
+
+\(ME6KMQ
+
+P: +7)222)511)47)49
+
+NQX</AllInformation>
+    <AllEmails>uuuuu@zzzzz
+ttttt@nnnnn
+ggggg@yyyyy</AllEmails>
+    <AllPhones>+79204402296
++73331643266
++72366074799
++72225114749</AllPhones>
+  </ContactData>
+  <ContactData>
+    <Bday>30</Bday>
+    <Bmonth>November</Bmonth>
+    <Byear>2003</Byear>
+    <Aday>27</Aday>
+    <Amonth>March</Amonth>
+    <Ayear>2015</Ayear>
+    <FirstName>B:2,</FirstName>
+    <MiddleName />
+    <LastName>W[</LastName>
+    <Nickname>+\&amp;</Nickname>
+    <Title>D3</Title>
+    <Company />
+    <Address>A$%</Address>
+    <HomeTelephone>+7)147)706)12)24</HomeTelephone>
+    <Mobile>+7-892-525-57-46</Mobile>
+    <WorkTelephone>+7(171(832(57(95</WorkTelephone>
+    <Fax>+7-562-757-96-86</Fax>
+    <Email>rrrrr@iiiii</Email>
+    <Email2>bbbbb@nnnnn</Email2>
+    <Email3>vvvvv@ttttt</Email3>
+    <Homepage>bbbbb.com</Homepage>
+    <SecondaryAddress>&gt;?P0"BQ&amp;</SecondaryAddress>
+    <SecondaryHomePhone>+7 686 913 14 65</SecondaryHomePhone>
+    <SecondaryNotes>$0RGC.:G</SecondaryNotes>
+    <HowOld>19</HowOld>
+    <HowLong>7</HowLong>
+    <AllInformation>B:2, W[
++\&amp;
+D3
+A$%
+
+H: +7)147)706)12)24
+M: +7-892-525-57-46
+W: +7(171(832(57(95
+F: +7-562-757-96-86
+
+rrrrr@iiiii
+bbbbb@nnnnn
+vvvvv@ttttt
+Homepage:
+bbbbb.com
+
+Birthday 30. November 2003 (19)
+Anniversary 27. March 2015 (7)
+
+&gt;?P0"BQ&amp;
+
+P: +7 686 913 14 65
+
+$0RGC.:G</AllInformation>
+    <AllEmails>rrrrr@iiiii
+bbbbb@nnnnn
+vvvvv@ttttt</AllEmails>
+    <AllPhones>+71477061224
++78925255746
++71718325795
++76869131465</AllPhones>
+  </ContactData>
+</ArrayOfContactData>
