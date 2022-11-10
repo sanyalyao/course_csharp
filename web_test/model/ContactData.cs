@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -12,6 +11,10 @@ namespace WebAddressbookTests
         private string allInformation;
         private int howOld;
         private int howLong;
+
+        public ContactData()
+        {
+        }
 
         public ContactData(string firstname, string lastname)
         {
@@ -100,11 +103,12 @@ namespace WebAddressbookTests
         public string SecondaryNotes { get; set; }
 
         public string Id { get; set; }
+
         public int HowOld
         {
             get
             {
-                return DateTime.Now.Year - Int32.Parse(Byear);
+                return Byear == null ? 0 : DateTime.Now.Year - Int32.Parse(Byear);
             }
             set
             {
@@ -116,7 +120,7 @@ namespace WebAddressbookTests
         {
             get
             {
-                return DateTime.Now.Year - Int32.Parse(Ayear);
+                return Ayear == null ? 0 : DateTime.Now.Year - Int32.Parse(Ayear);
             }
             set
             {

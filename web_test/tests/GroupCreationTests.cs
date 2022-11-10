@@ -1,5 +1,8 @@
 ﻿using NUnit.Framework;
 using System.Collections.Generic;
+using System.IO;
+using System.Xml.Serialization;
+using Newtonsoft.Json;
 
 namespace WebAddressbookTests
 {
@@ -20,7 +23,18 @@ namespace WebAddressbookTests
             return groups;
         }
 
-        [Test, TestCaseSource("RandomGroupDataProvider")]
+        public static IEnumerable<GroupData> GroupDataFromXml()
+        {
+            return (List<GroupData>) new XmlSerializer(typeof(List<GroupData>)).Deserialize(new StreamReader("groups.xml"));
+
+        }
+
+        public static IEnumerable<GroupData> GroupDataFromJson()
+        {
+            return JsonConvert.DeserializeObject<List<GroupData>>(File.ReadAllText("groups.json"));
+        }
+
+        [Test, TestCaseSource("GroupDataFromXml")]
         public void GroupCreationTest(GroupData group)
         {
             List<GroupData> oldGroups = app.Groups.GetGroupList();
