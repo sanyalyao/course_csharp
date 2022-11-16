@@ -43,25 +43,19 @@ namespace WebAddressbookTests
         public void Remove(GroupData group)
         {
             manager.Navigator.GoToGroupsPage();
-            if (IsGroupPresent(group).Select(x => x.Key).Single())
-            {
-                SelectGroup(IsGroupPresent(group).Select(x => x.Value).Single());
-                RemoveGroup();
-                ReturnToGroupsPage();
-            }
+            SelectGroupById(group.Id);
+            RemoveGroup();
+            ReturnToGroupsPage();
         }
 
         public void Modify(GroupData newGroup, GroupData oldGroup)
         {
             manager.Navigator.GoToGroupsPage();
-            if (IsGroupPresent(oldGroup).Select(x => x.Key).Single())
-            {
-                SelectGroup(IsGroupPresent(oldGroup).Select(x => x.Value).Single());
-                InitGroupModification();
-                FillGroupForm(newGroup);
-                SubmitGroupModification();
-                ReturnToGroupsPage();
-            }
+            SelectGroupById(oldGroup.Id);
+            InitGroupModification();
+            FillGroupForm(newGroup);
+            SubmitGroupModification();
+            ReturnToGroupsPage();
         }
 
         public int GetGroupCount()
@@ -112,29 +106,15 @@ namespace WebAddressbookTests
             groupCache = null;
             return this;
         }
-        public GroupHelper SelectGroup(int number)
+        public GroupHelper SelectGroupByCount(int number)
         {
             driver.FindElement(By.XPath($"//div[@id='content']/form/span[{number}]/input")).Click();
             return this;
         }
-
-        public Dictionary<bool, int> IsGroupPresent(GroupData group)
+        private GroupHelper SelectGroupById(string id)
         {
-            manager.Navigator.GoToGroupsPage();
-            IList<IWebElement> groupElements = driver.FindElement(By.Id("content")).FindElements(By.ClassName("group"));
-            Dictionary<bool, int> result = new Dictionary<bool, int>();
-            bool trueOrFalse = false;
-            int numberOfGroup = 0;
-            for (int i = 0; i < groupElements.Count(); i++)
-            {
-                if (groupElements[i].Text.ToLower() == group.Name.ToLower())
-                {
-                    trueOrFalse = true;
-                    numberOfGroup = i + 1;
-                }
-            }
-            result.Add(trueOrFalse, numberOfGroup);
-            return result;
+            driver.FindElement(By.XPath($"//input[@name='selected[]' and @value='{id}']")).Click();
+            return this;
         }
     }
 }

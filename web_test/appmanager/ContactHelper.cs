@@ -31,7 +31,7 @@ namespace WebAddressbookTests
         public ContactData GetContactInformationFromForm(int index)
         {
             manager.Navigator.OpenHomePage();
-            InitModify(index);
+            InitModifyByCount(index);
             string firstName = driver.FindElement(By.Name("firstname")).GetAttribute("value");
             string lastName = driver.FindElement(By.Name("lastname")).GetAttribute("value");
             string address = driver.FindElement(By.Name("address")).GetAttribute("value");
@@ -68,7 +68,7 @@ namespace WebAddressbookTests
         public ContactData GetDetailedContactInformationFromForm(int index)
         {
             manager.Navigator.OpenHomePage();
-            InitModify(index);
+            InitModifyByCount(index);
             string firstName = driver.FindElement(By.Name("firstname")).GetAttribute("value");
             string middleName = driver.FindElement(By.Name("middlename")).GetAttribute("value");
             string lastName = driver.FindElement(By.Name("lastname")).GetAttribute("value");
@@ -127,13 +127,9 @@ namespace WebAddressbookTests
         public void Remove(ContactData contact)
         {
             manager.Navigator.OpenHomePage();
-            if (IsContactPresent(contact).Select(x => x.Key).Single())
-            {
-                SelectContactInQueue(IsContactPresent(contact).Select(x => x.Value).Single());
-                RemoveContact();
-                manager.Navigator.ReturnToHomePage();
-            }
-
+            SelectContactById(contact.Id);
+            RemoveContact();
+            manager.Navigator.ReturnToHomePage();
         }
 
         public List<ContactData> GetContactList()
@@ -156,14 +152,11 @@ namespace WebAddressbookTests
 
         public void Modify(ContactData newData, ContactData oldData)
         {
-            if (IsContactPresent(oldData).Select(x => x.Key).Single())
-            {
-                manager.Navigator.OpenHomePage();
-                InitModify(IsContactPresent(oldData).Select(x => x.Value).Single());
-                FillContactForm(newData);
-                SubmitContactModification();
-                manager.Navigator.ReturnToHomePage();
-            }
+            manager.Navigator.OpenHomePage();
+            InitModifyById(oldData.Id);
+            FillContactForm(newData);
+            SubmitContactModification();
+            manager.Navigator.ReturnToHomePage();
         }
 
         public ContactHelper CreateNewContact(ContactData newContact)
@@ -188,9 +181,14 @@ namespace WebAddressbookTests
             return this;
         }
 
-        public ContactHelper InitModify(int contactInQueue)
+        public ContactHelper InitModifyByCount(int contactInQueue)
         {
             driver.FindElement(By.XPath($"//table[@id='maintable']/tbody/tr[{1 + contactInQueue}]/td[8]/a/img")).Click();
+            return this;
+        }
+        public ContactHelper InitModifyById(string id)
+        {
+            driver.FindElement(By.XPath($"//a[@href=\"edit.php?id={id}\"]")).Click();
             return this;
         }
 
@@ -199,7 +197,13 @@ namespace WebAddressbookTests
             driver.FindElement(By.XPath($"//table[@id='maintable']/tbody/tr[{1 + contactInQueue}]/td/input")).Click();
             return this;
         }
-        
+
+        public ContactHelper SelectContactById(string id)
+        {
+            driver.FindElement(By.XPath($"//input[@name=\"selected[]\" and @value=\"{id}\"]")).Click();
+            return this;
+        }
+
         public ContactHelper RemoveContact()
         {
             driver.FindElement(By.XPath("//input[@value='Delete']")).Click();
@@ -339,37 +343,6 @@ namespace WebAddressbookTests
         {
             manager.Navigator.OpenHomePage();
             driver.FindElements(By.Name("entry"))[index - 1].FindElements(By.TagName("td"))[6].Click();
-        }
-
-        public Dictionary<bool,int> IsContactPresent(ContactData contact)
-        {
-            manager.Navigator.OpenHomePage();
-            IList<IWebElement> entries = driver.FindElement(By.Id("maintable")).FindElements(By.Name("entry"));
-            List<IWebElement> tdElements = new List<IWebElement>();
-            IList<KeyValuePair<string, string>> elements = new List<KeyValuePair<string, string>>();
-            Dictionary<bool, int> result = new Dictionary<bool, int>();
-            bool trueOrFalse = false;
-            int numberOfEntry = 0;
-            for (int i = 0; i < entries.Count(); i++)
-            {
-                tdElements.Clear();
-                elements.Clear();
-                tdElements.AddRange(entries[i].FindElements(By.TagName("td")));
-                for (int j = 0; j < tdElements.Count - 1; j++)
-                {
-                    elements.Add(new KeyValuePair<string, string>(tdElements[j].Text, tdElements[j + 1].Text));
-                    foreach (KeyValuePair<string, string> element in elements)
-                    {
-                        if (element.Key.ToLower() == contact.LastName.ToLower() && element.Value.ToLower() == contact.FirstName.ToLower())
-                        {
-                            trueOrFalse = true;
-                            numberOfEntry = i + 1;
-                        }
-                    }
-                }
-            }
-            result.Add(trueOrFalse, numberOfEntry);
-            return result;
         }
     }
 }
