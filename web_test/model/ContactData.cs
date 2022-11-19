@@ -338,5 +338,15 @@ namespace WebAddressbookTests
             }
             return Regex.Replace(phone, @"[ ()-]", "") + "\r\n";
         }
+
+        public List<GroupData> GetGroups()
+        {
+            using (AddressBookDB db = new AddressBookDB())
+            {
+                return (from groupDB in db.Groups
+                        from relation in db.RelationGroupContact.Where(gr => gr.ContactId == Id && gr.GroupId == groupDB.Id)
+                        select groupDB).Distinct().ToList();
+            }
+        }
     }
 }

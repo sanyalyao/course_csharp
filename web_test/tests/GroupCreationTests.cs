@@ -4,6 +4,7 @@ using System.IO;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
 using System;
+using System.Linq;
 
 namespace WebAddressbookTests
 {
@@ -51,15 +52,15 @@ namespace WebAddressbookTests
         [Test]
         public void TestDB()
         {
-            DateTime start = DateTime.Now;
-            List<GroupData> fromUI = app.Groups.GetGroupList();
-            DateTime end = DateTime.Now;
-            Console.Out.WriteLine(end.Subtract(start));
+            foreach (ContactData contact in GroupData.GetAll()[0].GetContacts())
+            {
+                Console.Out.WriteLine(contact);
+            }
 
-            start = DateTime.Now;
-            List<GroupData> fromDB = GroupData.GetAll();
-            end = DateTime.Now;
-            Console.Out.WriteLine(end.Subtract(start));
+            foreach (GroupData group in ContactData.GetAll()[0].GetGroups())
+            {
+                Console.Out.WriteLine(group);
+            }
         }
 
     }
