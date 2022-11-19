@@ -138,6 +138,9 @@ namespace WebAddressbookTests
         [Column(Name = "id"), PrimaryKey]
         public string Id { get; set; }
 
+        [Column(Name = "deprecated")]
+        public string Deprecated { get; set; }
+
         public int HowOld
         {
             get
@@ -166,7 +169,16 @@ namespace WebAddressbookTests
         {
             using (AddressBookDB db = new AddressBookDB())
             {
-                return (from contactDB in db.Contacts select contactDB).ToList();
+                return (from contactDB in db.Contacts.Where(x => x.Deprecated == "0000-00-00 00:00:00") select contactDB).ToList(); 
+            }
+        }
+        public List<GroupData> GetGroups()
+        {
+            using (AddressBookDB db = new AddressBookDB())
+            {
+                return (from groupDB in db.Groups
+                        from relation in db.RelationGroupContact.Where(gr => gr.ContactId == Id && gr.GroupId == groupDB.Id && groupDB.Deprecated == "0000-00-00 00:00:00")
+                        select groupDB).Distinct().ToList();
             }
         }
 
@@ -337,16 +349,6 @@ namespace WebAddressbookTests
                 return "";
             }
             return Regex.Replace(phone, @"[ ()-]", "") + "\r\n";
-        }
-
-        public List<GroupData> GetGroups()
-        {
-            using (AddressBookDB db = new AddressBookDB())
-            {
-                return (from groupDB in db.Groups
-                        from relation in db.RelationGroupContact.Where(gr => gr.ContactId == Id && gr.GroupId == groupDB.Id)
-                        select groupDB).Distinct().ToList();
-            }
         }
     }
 }

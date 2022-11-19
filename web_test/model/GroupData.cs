@@ -53,7 +53,7 @@ namespace WebAddressbookTests
         {
             using (AddressBookDB db = new AddressBookDB())
             {
-                return (from groupDB in db.Groups select groupDB).ToList();
+                return (from groupDB in db.Groups.Where(x => x.Deprecated == "0000-00-00 00:00:00") select groupDB).ToList();
             }
         }
 
@@ -62,7 +62,7 @@ namespace WebAddressbookTests
             using (AddressBookDB db = new AddressBookDB())
             {
                 return (from contactDB in db.Contacts
-                        from relation in db.RelationGroupContact.Where(person => person.GroupId == Id && person.ContactId == contactDB.Id)
+                        from relation in db.RelationGroupContact.Where(person => person.GroupId == Id && person.ContactId == contactDB.Id && contactDB.Deprecated == "0000-00-00 00:00:00") 
                         select contactDB).Distinct().ToList();
             }
         }
@@ -78,5 +78,9 @@ namespace WebAddressbookTests
 
         [Column(Name = "group_id"), PrimaryKey, Identity]
         public string Id { get; set; }
+
+        [Column(Name = "deprecated")]
+        public string Deprecated { get; set; }
+
     }
 }

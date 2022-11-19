@@ -169,6 +169,25 @@ namespace WebAddressbookTests
             return this;
         }
 
+        public void AddContactToGroup(ContactData contact, GroupData group)
+        {
+            manager.Navigator.OpenHomePage();
+            ClearGroupFilter();
+            SelectContactById(contact.Id);
+            SelectGroupToAdd(group.Id);
+            CommitAddingContactToGroup();
+            new WebDriverWait(driver, TimeSpan.FromSeconds(10)).Until(d => d.FindElements(By.CssSelector("div.msgbox")).Count() > 0);
+        }
+
+        public void DeleteContactFromGroup(ContactData contact, GroupData group)
+        {
+            manager.Navigator.OpenHomePage();
+            SelectGroupFromFilter(group.Id);
+            SelectContactById(contact.Id);
+            CommitDeletingContactFromGroup();
+            new WebDriverWait(driver, TimeSpan.FromSeconds(10)).Until(d => d.FindElements(By.CssSelector("div.msgbox")).Count() > 0);
+        }
+
         public int GetContactCount()
         {
             return driver.FindElement(By.Id("maintable")).FindElements(By.Name("entry")).Count;
@@ -343,6 +362,29 @@ namespace WebAddressbookTests
         {
             manager.Navigator.OpenHomePage();
             driver.FindElements(By.Name("entry"))[index - 1].FindElements(By.TagName("td"))[6].Click();
+        }
+        public void CommitAddingContactToGroup()
+        {
+            driver.FindElement(By.Name("add")).Click();
+        }
+
+        public void SelectGroupToAdd(string id)
+        {
+            new SelectElement(driver.FindElement(By.Name("to_group"))).SelectByValue($"{id}");
+        }
+
+        public void ClearGroupFilter()
+        {
+            new SelectElement(driver.FindElement(By.Name("group"))).SelectByText("[all]");
+        }
+        private void CommitDeletingContactFromGroup()
+        {
+            driver.FindElement(By.Name("remove")).Click();
+        }
+
+        private void SelectGroupFromFilter(string id)
+        {
+            new SelectElement(driver.FindElement(By.Name("group"))).SelectByValue($"{id}");
         }
     }
 }
