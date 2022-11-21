@@ -35,7 +35,7 @@ namespace WebAddressbookTests
             return Name.GetHashCode();
         }
 
-       public override string ToString()
+        public override string ToString()
         {
             return $"name = {Name}\nheader = {Header}\nfooter = {Footer}";
         }
@@ -62,8 +62,17 @@ namespace WebAddressbookTests
             using (AddressBookDB db = new AddressBookDB())
             {
                 return (from contactDB in db.Contacts
-                        from relation in db.RelationGroupContact.Where(person => person.GroupId == Id && person.ContactId == contactDB.Id && contactDB.Deprecated == "0000-00-00 00:00:00") 
+                        from relation in db.RelationGroupContact.Where(relGC => relGC.GroupId == Id && relGC.ContactId == contactDB.Id && contactDB.Deprecated == "0000-00-00 00:00:00")
                         select contactDB).Distinct().ToList();
+            }
+        }
+
+        public IQueryable<GroupContactRelation> GetContactsAndGroups()
+        {
+            using (AddressBookDB db = new AddressBookDB())
+            {
+                IQueryable<GroupContactRelation> query = from relation in db.RelationGroupContact select relation;
+                return query;
             }
         }
 

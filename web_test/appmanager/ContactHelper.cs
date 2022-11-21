@@ -377,14 +377,28 @@ namespace WebAddressbookTests
         {
             new SelectElement(driver.FindElement(By.Name("group"))).SelectByText("[all]");
         }
-        private void CommitDeletingContactFromGroup()
+        public void CommitDeletingContactFromGroup()
         {
             driver.FindElement(By.Name("remove")).Click();
         }
 
-        private void SelectGroupFromFilter(string id)
+        public void SelectGroupFromFilter(string id)
         {
             new SelectElement(driver.FindElement(By.Name("group"))).SelectByValue($"{id}");
+        }
+
+        public List<KeyValuePair<string, string>> GetRelations()
+        {
+            List<KeyValuePair<string, string>> listOfRelations = new List<KeyValuePair<string, string>>();
+            foreach (IQueryable<GroupContactRelation> relations in GroupData.GetAll().Select(group => group.GetContactsAndGroups()))
+            {
+                foreach (GroupContactRelation row in relations)
+                {
+                    KeyValuePair<string, string> relation = new KeyValuePair<string, string>(row.ContactId, row.GroupId);
+                    listOfRelations.Add(relation);
+                }
+            }
+            return listOfRelations;
         }
     }
 }
