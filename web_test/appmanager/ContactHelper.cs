@@ -387,18 +387,55 @@ namespace WebAddressbookTests
             new SelectElement(driver.FindElement(By.Name("group"))).SelectByValue($"{id}");
         }
 
-        public List<KeyValuePair<string, string>> GetRelations()
+        public void CheckIfContactsPresent(string firstname, string lastname)
         {
-            List<KeyValuePair<string, string>> listOfRelations = new List<KeyValuePair<string, string>>();
-            foreach (IQueryable<GroupContactRelation> relations in GroupData.GetAll().Select(group => group.GetContactsAndGroups()))
+            if (ContactData.GetAll().Count() == 0)
             {
-                foreach (GroupContactRelation row in relations)
+                CreateNewContact(new ContactData(firstname, lastname));
+            }
+        }
+
+        public void CheckIsThereFreeContact(string firstname, string lastname)
+        {
+            List<ContactData> list = new List<ContactData>();
+            foreach (GroupData group in GroupData.GetAll())
+            {
+                foreach (ContactData contact in ContactData.GetAll())
                 {
-                    KeyValuePair<string, string> relation = new KeyValuePair<string, string>(row.ContactId, row.GroupId);
-                    listOfRelations.Add(relation);
+                    if (group.GetContacts().Exists(con => con.Id == contact.Id))
+                    {
+                        list.Add(contact);
+                    }
                 }
             }
-            return listOfRelations;
+            if (list.Count() == 0)
+            {
+                CreateNewContact(new ContactData(firstname, lastname));
+                new WebDriverWait(driver, TimeSpan.FromSeconds(10)).Until(d => d.FindElements(By.CssSelector("#search_count")).Count() > 0);
+            }
+        }
+
+        public void CheckIsThereBusyContact()
+        {
+            if (ContactData.GetAll().SelectMany(contact => contact.GetGroups()).Count() == 0)
+            {
+                AddContactToGroup(GetRelations().First().Key, GetRelations().First().Value);
+            }
+        }
+
+        public List<KeyValuePair<ContactData, GroupData>> GetRelations()
+        {
+            List<KeyValuePair<ContactData, GroupData>> myListOfRelations = new List<KeyValuePair<ContactData, GroupData>>();
+            foreach (ContactData contact in ContactData.GetAll())
+            {
+                if (GroupData.GetAll().Where(gr => !gr.GetContacts().Exists(con => con.Id == contact.Id)).Count() > 0)
+                {
+                    GroupData group = GroupData.GetAll().Where(gr => !gr.GetContacts().Exists(con => con.Id == contact.Id)).First();
+                    KeyValuePair<ContactData, GroupData> relation = new KeyValuePair<ContactData, GroupData>(contact, group);
+                    myListOfRelations.Add(relation);
+                }
+            }
+            return myListOfRelations;
         }
     }
 }

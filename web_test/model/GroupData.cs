@@ -67,15 +67,6 @@ namespace WebAddressbookTests
             }
         }
 
-        public IQueryable<GroupContactRelation> GetContactsAndGroups()
-        {
-            using (AddressBookDB db = new AddressBookDB())
-            {
-                IQueryable<GroupContactRelation> query = from relation in db.RelationGroupContact select relation;
-                return query;
-            }
-        }
-
         [Column(Name = "group_name")]
         public string Name { get; set; }
 

@@ -116,5 +116,13 @@ namespace WebAddressbookTests
             driver.FindElement(By.XPath($"//input[@name='selected[]' and @value='{id}']")).Click();
             return this;
         }
+        public void CheckIfGroupsPresent(string name)
+        {
+            if (GroupData.GetAll().Count() == 0)
+            {
+                GroupData contact = new GroupData(name);
+                Create(contact);
+            }
+        }
     }
 }
