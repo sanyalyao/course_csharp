@@ -70,9 +70,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="appmanager\ApplicationManager.cs" />
+    <Compile Include="appmanager\ContactHelper.cs" />
     <Compile Include="appmanager\GroupHelper.cs" />
     <Compile Include="appmanager\HelperBase.cs" />
+    <Compile Include="model\ContactData.cs" />
     <Compile Include="model\GroupData.cs" />
+    <Compile Include="tests\ContactCreationTests.cs" />
+    <Compile Include="tests\ContactRemovingTests.cs" />
     <Compile Include="tests\GroupRemovingTests.cs" />
     <Compile Include="tests\TestBase.cs" />
     <Compile Include="tests\GroupCreationTests.cs" />
