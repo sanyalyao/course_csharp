@@ -402,7 +402,7 @@ namespace WebAddressbookTests
             {
                 foreach (ContactData contact in ContactData.GetAll())
                 {
-                    if (group.GetContacts().Exists(con => con.Id == contact.Id))
+                    if (! group.GetContacts().Exists(con => con.Id == contact.Id))
                     {
                         list.Add(contact);
                     }
@@ -419,7 +419,8 @@ namespace WebAddressbookTests
         {
             if (ContactData.GetAll().SelectMany(contact => contact.GetGroups()).Count() == 0)
             {
-                AddContactToGroup(GetRelations().First().Key, GetRelations().First().Value);
+                KeyValuePair<ContactData, GroupData> pairContactGroup = GetRelations().First();
+                AddContactToGroup(pairContactGroup.Key, pairContactGroup.Value);
             }
         }
 

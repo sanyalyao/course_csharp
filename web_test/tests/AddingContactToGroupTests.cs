@@ -12,8 +12,9 @@ namespace WebAddressbookTests
             app.Groups.CheckIfGroupsPresent(GenerateRandomString(10));
             app.Contacts.CheckIfContactsPresent(GenerateRandomString(10), GenerateRandomString(10));
             app.Contacts.CheckIsThereFreeContact(GenerateRandomString(10), GenerateRandomString(10));
-            ContactData contactForGroup = app.Contacts.GetRelations().First().Key;
-            GroupData groupForContact = app.Contacts.GetRelations().First().Value;
+            KeyValuePair<ContactData, GroupData> pairContactGroup = app.Contacts.GetRelations().First();
+            ContactData contactForGroup = pairContactGroup.Key;
+            GroupData groupForContact = pairContactGroup.Value;
             List<ContactData> oldList = groupForContact.GetContacts();
             app.Contacts.AddContactToGroup(contactForGroup, groupForContact);
             List<ContactData> newList = groupForContact.GetContacts();
