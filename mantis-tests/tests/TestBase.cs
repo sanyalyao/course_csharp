@@ -19,16 +19,16 @@ namespace mantis_tests
             app = ApplicationManager.GetInstance();
         }
 
-        public static string GenerateRandomString(int number)
-        {
-            int l = Convert.ToInt32(rnd.NextDouble() * number);
-            StringBuilder builder = new StringBuilder();
-            for (int i = 0; i < l; i++)
-            {
-                builder.Append(Convert.ToChar(32 + Convert.ToInt32(rnd.NextDouble() * 65)));
-            }
-            return builder.ToString();
-        }
+        //public static string GenerateRandomString(int number)
+        //{
+        //    int l = Convert.ToInt32(rnd.NextDouble() * number);
+        //    StringBuilder builder = new StringBuilder();
+        //    for (int i = 0; i < l; i++)
+        //    {
+        //        builder.Append(Convert.ToChar(32 + Convert.ToInt32(rnd.NextDouble() * 65)));
+        //    }
+        //    return builder.ToString();
+        //}
 
         public static string GenerateRandomEmail()
         {
@@ -86,11 +86,10 @@ namespace mantis_tests
             return $"{builder}.com" ;
         }
 
-        public static string GenerateRandomLogin(int size)
+        public static string GenerateRandomString(int size)
         {
             string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
             return new string(Enumerable.Repeat(chars, size).Select(s => s[rnd.Next(s.Length)]).ToArray());
         }
-
     }
 }

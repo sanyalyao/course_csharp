@@ -9,12 +9,15 @@ namespace mantis_tests
         [Test]
         public void CreateProject()
         {
-            ProjectData newProject = new ProjectData(GenerateRandomString(5));
+            ProjectData newProject = new ProjectData()
+            {
+                ProjectName = GenerateRandomString(5)
+            };
             app.Navigation.OpenManageMenu();
             app.Navigation.OpenManageProjectsPage();
-            List<ProjectData> oldProjects = app.Project.GetProjects();
+            List<ProjectData> oldProjects = app.API.GetProjects(adminAccount);
             app.Project.CreateNewProject(newProject);
-            List<ProjectData> newProjects = app.Project.GetProjects();
+            List<ProjectData> newProjects = app.API.GetProjects(adminAccount);
             oldProjects.Add(newProject);
             oldProjects.Sort();
             newProjects.Sort();

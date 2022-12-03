@@ -5,7 +5,10 @@ namespace mantis_tests
     public class ProjectData : IComparable<ProjectData>, IEquatable<ProjectData>
     {
         public string ProjectName;
-
+        public string Id;
+        public ProjectData()
+        {
+        }
         public ProjectData(string projectName)
         {
             ProjectName = projectName;

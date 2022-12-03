@@ -10,15 +10,19 @@ namespace mantis_tests
         [Test]
         public void RemoveProject()
         {
+            if (app.API.GetProjects(adminAccount).Count() == 0)
+            {
+                ProjectData newProject = new ProjectData()
+                {
+                    ProjectName = GenerateRandomString(5)
+                };
+                app.API.CreateNewProject(adminAccount, newProject);
+            }
+            List<ProjectData> oldProjects = app.API.GetProjects(adminAccount);
             app.Navigation.OpenManageMenu();
             app.Navigation.OpenManageProjectsPage();
-            if (app.Project.GetProjects().Count() == 0)
-            {
-                app.Project.CreateNewProject(new ProjectData(GenerateRandomString(5)));
-            }
-            List<ProjectData> oldProjects = app.Project.GetProjects();
             app.Project.RemoveProject(0);
-            List<ProjectData> newProjects = app.Project.GetProjects();
+            List<ProjectData> newProjects = app.API.GetProjects(adminAccount);
             oldProjects.RemoveAt(0);
             oldProjects.Sort();
             newProjects.Sort();

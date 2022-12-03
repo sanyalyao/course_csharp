@@ -8,23 +8,29 @@ namespace mantis_tests
     public class ApplicationManager
     {
         protected IWebDriver driver;
-        protected string baseURL;
+        protected string mainURL;
+        private string baseURL;
         private RegistrationHelper registration;
         private FtpHelper ftp;
         private NavigationHelper navigation;
         private LoginHelper auth;
         private ProjectHelper project;
+        private AdminHelper admin;
+        private APIHelper api;
         private static ThreadLocal<ApplicationManager> app = new ThreadLocal<ApplicationManager>();
 
         private ApplicationManager()
         {
             driver = new FirefoxDriver();
-            baseURL = "http://localhost/mantisbt-2.25.4/login_page.php";
+            mainURL = "http://localhost/mantisbt-2.25.4/login_page.php";
+            baseURL = "http://localhost/mantisbt-2.25.4";
             registration = new RegistrationHelper(this);
             ftp = new FtpHelper(this);
-            navigation = new NavigationHelper(this, baseURL);
+            navigation = new NavigationHelper(this, mainURL);
             auth = new LoginHelper(this);
             project = new ProjectHelper(this);
+            admin = new AdminHelper(this, baseURL);
+            api = new APIHelper(this);
         }
 
         ~ApplicationManager()
@@ -87,6 +93,21 @@ namespace mantis_tests
             get
             {
                 return project;
+            }
+        }
+        public AdminHelper Admin
+        {
+            get
+            {
+                return admin;
+            }
+        }
+
+        public APIHelper API
+        {
+            get
+            {
+                return api;
             }
         }
     }
