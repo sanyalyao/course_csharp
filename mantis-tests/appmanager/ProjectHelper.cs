@@ -20,7 +20,7 @@ namespace mantis_tests
             new WebDriverWait(driver, TimeSpan.FromSeconds(10)).Until(d => d.FindElements(By.LinkText("Manage Projects")).Count() > 0);
         }
 
-        internal List<ProjectData> GetProjects()
+        public List<ProjectData> GetProjects()
         {
             List<ProjectData> projects = new List<ProjectData>();
             var elements = driver.FindElements(By.ClassName("table-responsive"))[0].FindElement(By.TagName("tbody")).FindElements(By.TagName("tr"));
@@ -31,7 +31,7 @@ namespace mantis_tests
             return projects;
         }
 
-        internal void RemoveProject(int index)
+        public void RemoveProject(int index)
         {
             driver.FindElements(By.ClassName("table-responsive"))[0].FindElement(By.TagName("tbody")).FindElements(By.TagName("tr"))[index].FindElement(By.TagName("a")).Click();
             driver.FindElement(By.CssSelector("input[value='Delete Project']")).Click();

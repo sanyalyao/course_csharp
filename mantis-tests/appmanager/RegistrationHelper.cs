@@ -43,7 +43,7 @@ namespace mantis_tests
         private void SubmitRegistration()
         {
             driver.FindElement(By.CssSelector("input[type='submit'][value='Signup']")).Click();
-            new WebDriverWait(driver, TimeSpan.FromSeconds(40)).Until(d => d.FindElements(By.LinkText("Proceed")).Count() > 0);
+            new WebDriverWait(driver, TimeSpan.FromSeconds(120)).Until(d => d.FindElements(By.LinkText("Proceed")).Count() > 0);
         }
     }
 }

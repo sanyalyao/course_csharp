@@ -1,4 +1,5 @@
 ﻿using OpenQA.Selenium;
+using System;
 
 namespace mantis_tests
 {
@@ -27,6 +28,11 @@ namespace mantis_tests
         public void OpenManageProjectsPage()
         {
             driver.FindElement(By.LinkText("Manage Projects")).Click();
+        }
+
+        public void OpenManageUsersPage()
+        {
+            driver.FindElement(By.LinkText("Manage Users")).Click();
         }
     }
 }
