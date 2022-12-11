@@ -10,27 +10,24 @@ namespace WebAddressbookTests
         [Test]
         public void ModifyContact()
         {
-            ContactData modifiedContact = new ContactData("modified First name", "modified Last name");
-            ContactData oldContact = new ContactData("ii First name", "ii Last name");
-            if (! (from person in ContactData.GetAll() select new { person.FirstName, person.LastName })
-                .Contains(new { oldContact.FirstName, oldContact.LastName })
-                )
+            ContactData modifiedContact = new ContactData(GenerateRandomString(5), GenerateRandomString(5));
+            if (ContactData.GetAll().Count() == 0)
             {
-                app.Contacts.CreateNewContact(oldContact);
+                app.Contacts.CreateNewContact(new ContactData(GenerateRandomString(5), GenerateRandomString(5)));
             }
+            ContactData oldContact = ContactData.GetAll()[0];
             List<ContactData> oldContacts = ContactData.GetAll();
-            ContactData oldContactFromDB = oldContacts.Where(person => person.FirstName == oldContact.FirstName && person.LastName == oldContact.LastName).First();
-            app.Contacts.Modify(modifiedContact, oldContactFromDB);
+            app.Contacts.Modify(modifiedContact, oldContact);
             Assert.AreEqual(oldContacts.Count, app.Contacts.GetContactCount());
             List<ContactData> newContacts = ContactData.GetAll();
-            oldContacts.Where(person => person.Id == oldContactFromDB.Id).Single().FirstName = modifiedContact.FirstName;
-            oldContacts.Where(person => person.Id == oldContactFromDB.Id).Single().LastName = modifiedContact.LastName;
+            oldContacts[0].FirstName = modifiedContact.FirstName;
+            oldContacts[0].LastName = modifiedContact.LastName;
             oldContacts.Sort();
             newContacts.Sort();
             Assert.AreEqual(oldContacts, newContacts);
             foreach (ContactData contact in newContacts)
             {
-                if (contact.Id == oldContactFromDB.Id)
+                if (contact.Id == oldContact.Id)
                 {
                     Assert.AreEqual(modifiedContact.LastName, contact.LastName);
                     Assert.AreEqual(modifiedContact.FirstName, contact.FirstName);

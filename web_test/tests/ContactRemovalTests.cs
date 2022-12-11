@@ -10,25 +10,22 @@ namespace WebAddressbookTests
         [Test]
         public void RemoveContact()
         {
-            ContactData contactForRemove = new ContactData("removed First name", "removed Last name");
-            if (! (from person in ContactData.GetAll() select new { person.FirstName, person.LastName })
-                .Contains(new { contactForRemove.FirstName, contactForRemove.LastName })
-                )
+            if (ContactData.GetAll().Count() == 0)
             {
-                app.Contacts.CreateNewContact(contactForRemove);
+                app.Contacts.CreateNewContact(new ContactData(GenerateRandomString(5), GenerateRandomString(5)));
             }
+            ContactData contactForRemove = ContactData.GetAll()[0];
             List<ContactData> oldContacts = ContactData.GetAll();
-            ContactData removedContact = oldContacts.Where(person => person.LastName == contactForRemove.LastName && person.FirstName == contactForRemove.FirstName).First();
-            app.Contacts.Remove(removedContact);
+            app.Contacts.Remove(contactForRemove);
             Assert.AreEqual(oldContacts.Count - 1, app.Contacts.GetContactCount());
             List<ContactData> newContacts = ContactData.GetAll();
-            oldContacts.Remove(removedContact);
+            oldContacts.RemoveAt(0);
             oldContacts.Sort();
             newContacts.Sort();
             Assert.AreEqual(oldContacts, newContacts);
             foreach (ContactData contact in newContacts)
             {
-                Assert.AreNotEqual(removedContact.Id, contact.Id);
+                Assert.AreNotEqual(contactForRemove.Id, contact.Id);
             }
         }
     }

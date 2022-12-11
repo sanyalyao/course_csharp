@@ -54,9 +54,47 @@ namespace WebAddressbookTests
             return JsonConvert.DeserializeObject<List<ContactData>>(File.ReadAllText("contacts.json"));
         }
 
-        [Test, TestCaseSource("ContactsDataFromJson")]
-        public void ContactCreationTest(ContactData newContact)
+        //[Test, TestCaseSource("ContactsDataFromJson")]
+        //public void ContactCreationTest(ContactData newContact)
+        //{
+        //    List<ContactData> oldContacts = ContactData.GetAll();
+        //    app.Contacts.CreateNewContact(newContact);
+        //    Assert.AreEqual(oldContacts.Count + 1, app.Contacts.GetContactCount());
+        //    List<ContactData> newContacts = ContactData.GetAll();
+        //    oldContacts.Add(newContact);
+        //    oldContacts.Sort();
+        //    newContacts.Sort();
+        //    Assert.AreEqual(oldContacts, newContacts);
+        //}
+
+        [Test]
+        public void CreateContact()
         {
+            ContactData newContact = new ContactData(GenerateRandomString(5), GenerateRandomString(5))
+            {
+                MiddleName = GenerateRandomString(5),
+                Nickname = GenerateRandomString(5),
+                Company = GenerateRandomString(5),
+                Title = GenerateRandomString(5),
+                Address = GenerateRandomString(10),
+                HomeTelephone = GenerateRandomPhone(),
+                WorkTelephone = GenerateRandomPhone(),
+                Mobile = GenerateRandomPhone(),
+                Fax = GenerateRandomPhone(),
+                Email = GenerateRandomEmail(),
+                Email2 = GenerateRandomEmail(),
+                Email3 = GenerateRandomEmail(),
+                Homepage = GenerateRandomWebSite(),
+                Bday = GetRandomDay(),
+                Bmonth = GetRandomMonth(),
+                Byear = GenerateRandomYear(),
+                Aday = GetRandomDay(),
+                Amonth = GetRandomMonth(),
+                Ayear = GenerateRandomYear(),
+                SecondaryAddress = GenerateRandomString(10),
+                SecondaryHomePhone = GenerateRandomPhone(),
+                SecondaryNotes = GenerateRandomString(15)
+            };
             List<ContactData> oldContacts = ContactData.GetAll();
             app.Contacts.CreateNewContact(newContact);
             Assert.AreEqual(oldContacts.Count + 1, app.Contacts.GetContactCount());

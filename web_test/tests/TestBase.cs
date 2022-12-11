@@ -19,15 +19,10 @@ namespace WebAddressbookTests
             app = ApplicationManager.GetInstance();
         }
 
-        public static string GenerateRandomString(int number)
+        public static string GenerateRandomString(int length)
         {
-            int l = Convert.ToInt32(rnd.NextDouble() * number);
-            StringBuilder builder = new StringBuilder();
-            for (int i = 0; i < l; i++)
-            {
-                builder.Append(Convert.ToChar(32 + Convert.ToInt32(rnd.NextDouble() * 65)));
-            }
-            return builder.ToString();
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            return new string(Enumerable.Repeat(chars, length).Select(s => s[rnd.Next(s.Length)]).ToArray());
         }
 
         public static string GenerateRandomEmail()

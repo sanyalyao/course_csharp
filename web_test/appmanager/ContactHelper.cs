@@ -59,7 +59,7 @@ namespace WebAddressbookTests
         {
             GoToPropertiesOfContact(index);
             string allInformation = driver.FindElement(By.Id("content")).Text;
-            return new ContactData("", "")
+            return new ContactData()
             {
                 AllInformation = allInformation
             };
