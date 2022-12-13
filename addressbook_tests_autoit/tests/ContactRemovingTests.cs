@@ -12,7 +12,11 @@ namespace addressbook_tests_autoit
         {
             if (app.Contacts.GetContactList().Count() == 0)
             {
-                app.Contacts.CreateNewContact(new ContactData() { Firstname = "new Firstname" });
+                app.Contacts.CreateNewContact(new ContactData() 
+                { 
+                    Id = GenerateRandomIdentifier(),
+                    Firstname = GenerateRandomString(5)
+                });
             }
             List<ContactData> oldContacts = app.Contacts.GetContactList();
             app.Contacts.RemoveContact(0);

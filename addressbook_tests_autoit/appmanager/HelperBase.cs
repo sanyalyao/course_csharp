@@ -14,5 +14,12 @@ namespace addressbook_tests_autoit
             this.aux = manager.Aux;
             WinTitle = ApplicationManager.WinTitle;
         }
+
+        public void WindowWait(string window)
+        {
+            aux.WinWait(window);
+            aux.WinActivate(window);
+            aux.WinWaitActive(window);
+        }
     }
 }

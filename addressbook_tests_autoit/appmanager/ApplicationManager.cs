@@ -13,9 +13,7 @@ namespace addressbook_tests_autoit
         {
             aux = new AutoItX3();
             aux.Run(@"C:\Users\qwert\Documents\Course\AddressBook.exe", "", aux.SW_SHOW);
-            aux.WinWait(WinTitle);
-            aux.WinActivate(WinTitle);
-            aux.WinWaitActive(WinTitle);
+            WindowWait(WinTitle);
             groupHelper = new GroupHelper(this);
             contactHelper = new ContactHelper(this);
         }
@@ -23,6 +21,12 @@ namespace addressbook_tests_autoit
         public void Stop()
         {
             aux.ControlClick(WinTitle, "", "WindowsForms10.BUTTON.app.0.2c908d510");
+        }
+         public void WindowWait(string window)
+        {
+            aux.WinWait(window);
+            aux.WinActivate(window);
+            aux.WinWaitActive(window);
         }
 
         public AutoItX3 Aux
