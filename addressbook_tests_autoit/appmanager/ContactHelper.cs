@@ -123,7 +123,6 @@ namespace addressbook_tests_autoit
 
         internal void RemoveContact(int index)
         {
-            WindowWait(WinContactEditor);
             if (index == 0)
             {
                 aux.ControlClick(WinTitle, "", "WindowsForms10.BUTTON.app.0.2c908d59");

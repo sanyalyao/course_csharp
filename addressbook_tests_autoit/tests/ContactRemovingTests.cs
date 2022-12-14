@@ -19,12 +19,17 @@ namespace addressbook_tests_autoit
                 });
             }
             List<ContactData> oldContacts = app.Contacts.GetContactList();
+            ContactData contactForRemove = oldContacts[0];
             app.Contacts.RemoveContact(0);
             List<ContactData> newContacts = app.Contacts.GetContactList();
             oldContacts.RemoveAt(0);
             oldContacts.Sort();
             newContacts.Sort();
             Assert.AreEqual(oldContacts.Count, newContacts.Count);
+            foreach (ContactData contact in newContacts)
+            {
+                Assert.AreNotEqual(contact.Id, contactForRemove.Id);
+            }
         }
     }
 }

@@ -12,7 +12,7 @@ namespace addressbook_tests_autoit
             List<GroupData> oldGroups = app.Groups.GetGroupList();
             GroupData newGroup = new GroupData()
             {
-                Name = "test"
+                Name = GenerateRandomString(5)
             };
             app.Groups.CreateNewGroup(newGroup);
             List<GroupData> newGroups = app.Groups.GetGroupList();
@@ -20,6 +20,16 @@ namespace addressbook_tests_autoit
             oldGroups.Sort();
             newGroups.Sort();
             Assert.AreEqual(oldGroups.Count, newGroups.Count);
+            foreach (GroupData group in newGroups)
+            {
+                foreach (GroupData oldGroup in oldGroups)
+                {
+                    if (oldGroup.Name == group.Name)
+                    {
+                        Assert.AreEqual(oldGroup.Name, group.Name);
+                    }
+                }
+            }
         }
     }
 }

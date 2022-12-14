@@ -12,15 +12,20 @@ namespace addressbook_tests_autoit
         {
             if (app.Groups.GetGroupList().Count() == 0 || app.Groups.GetGroupList().Count() == 1)
             {
-                app.Groups.CreateNewGroup(new GroupData() { Name = "deleteGroup"});
+                app.Groups.CreateNewGroup(new GroupData() { Name = GenerateRandomString(5)});
             }
             List<GroupData> oldGroups = app.Groups.GetGroupList();
+            GroupData groupForRemove = oldGroups[0];
             app.Groups.RemoveGroup(0);
             List<GroupData> newGroups = app.Groups.GetGroupList();
             oldGroups.RemoveAt(0);
             oldGroups.Sort();
             newGroups.Sort();
             Assert.AreEqual(oldGroups.Count, newGroups.Count);
+            foreach (GroupData group in newGroups)
+            {
+                Assert.AreNotEqual(group.Name, groupForRemove.Name);
+            }
         }
     }
 }
