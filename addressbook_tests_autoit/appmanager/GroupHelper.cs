@@ -26,6 +26,33 @@ namespace addressbook_tests_autoit
             return list;
         }
 
+        internal void ModifyGroup(GroupData modifiedGroup, int index)
+        {
+            OpenGroupsDialogue();
+
+            if (index == 0)
+            {
+                aux.Send("{DOWN}");
+                aux.ControlClick(GroupEditorWinTitle, "", "WindowsForms10.BUTTON.app.0.2c908d52");
+                aux.Send(modifiedGroup.Name);
+                aux.Send("{ENTER}");
+                aux.ControlClick(GroupEditorWinTitle, "", "WindowsForms10.BUTTON.app.0.2c908d54");
+                WindowWait(WinTitle);
+            }
+            else
+            {
+                for (int i = 0; i <= index - 1; i++)
+                {
+                    aux.Send("{DOWN}");
+                }
+                aux.ControlClick(GroupEditorWinTitle, "", "WindowsForms10.BUTTON.app.0.2c908d52");
+                aux.Send(modifiedGroup.Name);
+                aux.Send("{ENTER}");
+                aux.ControlClick(GroupEditorWinTitle, "", "WindowsForms10.BUTTON.app.0.2c908d54");
+                WindowWait(WinTitle);
+            }
+        }
+
         public void RemoveGroup(int group)
         {
             OpenGroupsDialogue();
